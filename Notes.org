@@ -1,0 +1,29 @@
+#+TITLE: Notes
+#+AUTHOR: Maksymilian Jodłowski
+
+* Day 1
+** Technologies wishlist
+*** Backend
+- Phoenix framework
+- Postgres
+- GraphQL - Absinthe
+- Authentication - Überauth (github, google, maybe others)
+
+*** Frontend
+- React (SPA app)
+- Vite
+- Bulma
+- Apollo
+- Redux
+
+*** Deployment
+- Heroku
+- Docker
+
+** Tasks
+*** DONE Setup repo & project skeleton
+#+begin_src shell
+mix phx.new employee_reward_app --no-assets --binary-id
+#+end_src
+*** TODO Integrate Phoenix with Vite/React
+Based on https://moroz.dev/blog/integrating-vite-js-with-phoenix-1-6
