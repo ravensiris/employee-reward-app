@@ -25,5 +25,9 @@
 #+begin_src shell
 mix phx.new employee_reward_app --no-assets --binary-id
 #+end_src
+*** TODO Use gitflow
+- Remove master branch.
+- Set develop as the main branch.
+- Start working on features
 *** TODO Integrate Phoenix with Vite/React
 Based on https://moroz.dev/blog/integrating-vite-js-with-phoenix-1-6
