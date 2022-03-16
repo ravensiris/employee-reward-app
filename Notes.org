@@ -25,7 +25,7 @@
 #+begin_src shell
 mix phx.new employee_reward_app --no-assets --binary-id
 #+end_src
-*** TODO Use gitflow
+*** DONE Use gitflow
 - Remove master branch.
 - Set develop as the main branch.
 - Start working on features
