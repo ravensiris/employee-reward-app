@@ -29,5 +29,7 @@ mix phx.new employee_reward_app --no-assets --binary-id
 - Remove master branch.
 - Set develop as the main branch.
 - Start working on features
-*** TODO Integrate Phoenix with Vite/React
+*** DONE Integrate Phoenix with Vite/React
 Based on https://moroz.dev/blog/integrating-vite-js-with-phoenix-1-6
+
+Instead of npm or yarn I'm using pnpm.

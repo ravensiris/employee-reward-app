@@ -23,7 +23,12 @@ config :employee_reward_app, EmployeeRewardAppWeb.Endpoint,
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "4TSXv5yKZ7aqBx1xSQIVchyPtd6MkBIOm+wtxDsbXLe5ZXXklydmKbDvphpJhSRR",
-  watchers: []
+  watchers: [
+    node: [
+      "node_modules/vite/bin/vite.js",
+      cd: Path.expand("../assets", __DIR__)
+    ]
+  ]
 
 # ## SSL Support
 #
