@@ -1,35 +1,37 @@
 #+TITLE: Notes
 #+AUTHOR: Maksymilian Jodłowski
 
-* Day 1
-** Technologies wishlist
-*** Backend
+* Technologies wishlist
+** Backend
 - Phoenix framework
 - Postgres
 - GraphQL - Absinthe
 - Authentication - Überauth (github, google, maybe others)
 
-*** Frontend
+** Frontend
 - React (SPA app)
 - Vite
 - Bulma
 - Apollo
 - Redux
 
-*** Deployment
+** Deployment
 - Heroku
 - Docker
 
-** Tasks
-*** DONE Setup repo & project skeleton
+* Day 1
+** DONE Setup repo & project skeleton
 #+begin_src shell
 mix phx.new employee_reward_app --no-assets --binary-id
 #+end_src
-*** DONE Use gitflow
+** DONE Use gitflow
 - Remove master branch.
 - Set develop as the main branch.
 - Start working on features
-*** DONE Integrate Phoenix with Vite/React
+** DONE Integrate Phoenix with Vite/React
 Based on https://moroz.dev/blog/integrating-vite-js-with-phoenix-1-6
 
 Instead of npm or yarn I'm using pnpm.
+* Day 2
+** TODO Deploy to heroku
+Guide used: https://hexdocs.pm/phoenix/heroku.html
