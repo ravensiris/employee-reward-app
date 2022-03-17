@@ -24,7 +24,7 @@ defmodule EmployeeRewardAppWeb.Endpoint do
   else
     plug Plug.Static,
       at: "/",
-      from: :scheduler_web,
+      from: :employee_reward_app,
       gzip: false,
       only: ~w(assets fonts images favicon.ico robots.txt)
   end
