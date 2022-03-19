@@ -18,7 +18,7 @@ defmodule EmployeeRewardApp.Application do
       EmployeeRewardAppWeb.Endpoint,
       # Start a worker by calling: EmployeeRewardApp.Worker.start_link(arg)
       # {EmployeeRewardApp.Worker, arg}
-      {Redix, name: :redix}
+      {Redix, {System.get_env("REDIS_URL", "redis://localhost"), [name: :redix]}}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
