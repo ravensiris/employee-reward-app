@@ -49,7 +49,9 @@ defmodule EmployeeRewardApp.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:pow, "~> 1.0.26"},
-      {:redix, "~> 0.9.2"}
+      {:redix, "~> 0.9.2"},
+      {:gen_smtp, "~> 1.1"},
+      {:hackney, "~> 1.18"}
     ]
   end
 
