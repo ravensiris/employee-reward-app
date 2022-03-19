@@ -51,7 +51,10 @@ defmodule EmployeeRewardApp.MixProject do
       {:pow, "~> 1.0.26"},
       {:redix, "~> 0.9.2"},
       {:gen_smtp, "~> 1.1"},
-      {:hackney, "~> 1.18"}
+      {:hackney, "~> 1.18"},
+      {:pow_assent, "~> 0.4.12"},
+      {:certifi, "~> 2.4"},
+      {:ssl_verify_fun, "~> 1.1"}
     ]
   end
 
