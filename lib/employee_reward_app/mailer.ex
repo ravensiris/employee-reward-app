@@ -1,22 +1,46 @@
 defmodule EmployeeRewardApp.Mailer do
+  use Pow.Phoenix.Mailer
   use Swoosh.Mailer, otp_app: :employee_reward_app
-  require Logger
+
   import Swoosh.Email
 
-  def cast(%{user: user, subject: subject, text: text, html: html, assigns: _assigns}) do
-    # Build email struct to be used in `process/1`
-    new()
-    |> from("noreply@secret-dawn-99555.herokuapp.com")
-    |> to(user.email)
+  require Logger
+
+  defp replace_example_com(text) do
+    String.replace(text, "example.com", "secret-dawn-99555.herokuapp.com")
+  end
+
+  @impl true
+  def cast(%{user: user, subject: subject, text: text, html: html}) do
+    html = replace_example_com(html)
+    text = replace_example_com(text)
+
+    %Swoosh.Email{}
+    |> to({"", user.email})
+    |> from({"Employee Reward App", "noreply@secret-dawn-99555.herokuapp.com"})
     |> subject(subject)
-    |> text_body(text)
     |> html_body(html)
+    |> text_body(text)
   end
 
+  @impl true
   def process(email) do
-    # Send email
+    # An asynchronous process should be used here to prevent enumeration
+    # attacks. Synchronous e-mail delivery can reveal whether a user already
+    # exists in the system or not.
 
-    deliver!(email)
-    Logger.debug("E-mail sent: #{inspect(email)}")
+    Task.start(fn ->
+      email
+      |> deliver()
+      |> log_warnings()
+    end)
+
+    :ok
   end
+
+  defp log_warnings({:error, reason}) do
+    Logger.warn("Mailer backend failed with: #{inspect(reason)}")
+  end
+
+  defp log_warnings({:ok, response}), do: {:ok, response}
 end
