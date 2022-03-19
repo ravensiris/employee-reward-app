@@ -13,7 +13,6 @@
 - Vite
 - Bulma
 - Apollo
-- Redux
 
 ** Deployment
 - Heroku
