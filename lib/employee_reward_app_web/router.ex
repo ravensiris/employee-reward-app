@@ -2,6 +2,9 @@ defmodule EmployeeRewardAppWeb.Router do
   use EmployeeRewardAppWeb, :router
   use Pow.Phoenix.Router
 
+  use Pow.Extension.Phoenix.Router,
+    extensions: [PowResetPassword, PowEmailConfirmation]
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -24,6 +27,7 @@ defmodule EmployeeRewardAppWeb.Router do
     pipe_through :browser
 
     pow_routes()
+    pow_extension_routes()
   end
 
   scope "/", EmployeeRewardAppWeb do
