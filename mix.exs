@@ -48,7 +48,8 @@ defmodule EmployeeRewardApp.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:pow, "~> 1.0.26"}
+      {:pow, "~> 1.0.26"},
+      {:redix, "~> 0.9.2"}
     ]
   end
 
