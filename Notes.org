@@ -6,7 +6,7 @@
 - Phoenix framework
 - Postgres
 - GraphQL - Absinthe
-- Authentication - Überauth (github, google, maybe others)
+- Authentication - Pow?
 
 ** Frontend
 - React (SPA app)
@@ -35,3 +35,9 @@ Instead of npm or yarn I'm using pnpm.
 ** DONE Deploy to heroku
 Guide used: https://hexdocs.pm/phoenix/heroku.html
 Deployed to: https://secret-dawn-99555.herokuapp.com/
+* Day 3
+** DONE Test ueberauth.
+Ueberauth seems a bit annoying to use.
+Test Pow tomorrow.
+* Day 4
+** TODO Test Pow
