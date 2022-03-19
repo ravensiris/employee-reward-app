@@ -54,7 +54,8 @@ defmodule EmployeeRewardApp.MixProject do
       {:hackney, "~> 1.18"},
       {:pow_assent, "~> 0.4.12"},
       {:certifi, "~> 2.4"},
-      {:ssl_verify_fun, "~> 1.1"}
+      {:ssl_verify_fun, "~> 1.1"},
+      {:absinthe, "~> 1.7"}
     ]
   end
 
