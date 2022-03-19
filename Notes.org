@@ -40,4 +40,8 @@ Deployed to: https://secret-dawn-99555.herokuapp.com/
 Ueberauth seems a bit annoying to use.
 Test Pow tomorrow.
 * Day 4
-** TODO Test Pow
+** DONE Test Pow
+Done setting up Pow
+Additionally Redis is now required.
+** TODO Setup absinthe
+Just install with playground and create example endpoint
