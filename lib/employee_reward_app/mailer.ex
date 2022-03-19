@@ -6,8 +6,10 @@ defmodule EmployeeRewardApp.Mailer do
 
   require Logger
 
+  alias EmployeeRewardAppWeb.Endpoint
+
   defp replace_example_com(text) do
-    String.replace(text, "example.com", "secret-dawn-99555.herokuapp.com")
+    String.replace(text, "http://example.com", Endpoint.url())
   end
 
   @impl true
@@ -17,7 +19,7 @@ defmodule EmployeeRewardApp.Mailer do
 
     %Swoosh.Email{}
     |> to({"", user.email})
-    |> from({"Employee Reward App", "noreply@secret-dawn-99555.herokuapp.com"})
+    |> from({"Employee Reward App", "noreply@#{Endpoint.host()}"})
     |> subject(subject)
     |> html_body(html)
     |> text_body(text)
