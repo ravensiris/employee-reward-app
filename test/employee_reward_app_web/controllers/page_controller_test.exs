@@ -1,8 +1,8 @@
 defmodule EmployeeRewardAppWeb.PageControllerTest do
   use EmployeeRewardAppWeb.ConnCase
 
-  test "GET / has an element with id 'root'", %{conn: conn} do
+  test "GET / Unathorized redirect", %{conn: conn} do
     conn = get(conn, "/")
-    assert html_response(conn, 200) =~ "id=\"root\""
+    assert html_response(conn, 302) =~ "You are being"
   end
 end
