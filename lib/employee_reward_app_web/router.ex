@@ -1,6 +1,7 @@
 defmodule EmployeeRewardAppWeb.Router do
   use EmployeeRewardAppWeb, :router
   use Pow.Phoenix.Router
+  use PowAssent.Phoenix.Router
 
   use Pow.Extension.Phoenix.Router,
     extensions: [PowResetPassword, PowEmailConfirmation]
@@ -23,11 +24,25 @@ defmodule EmployeeRewardAppWeb.Router do
       error_handler: Pow.Phoenix.PlugErrorHandler
   end
 
+  pipeline :skip_csrf_protection do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug :put_secure_browser_headers
+  end
+
+  scope "/" do
+    pipe_through :skip_csrf_protection
+
+    pow_assent_authorization_post_callback_routes()
+  end
+
   scope "/" do
     pipe_through :browser
 
     pow_routes()
     pow_extension_routes()
+    pow_assent_routes()
   end
 
   scope "/", EmployeeRewardAppWeb do

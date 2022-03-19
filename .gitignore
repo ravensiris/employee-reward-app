@@ -23,3 +23,4 @@ erl_crash.dump
 employee_reward_app-*.tar
 
 .log
+/config/dev.secret.exs
