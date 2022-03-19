@@ -52,9 +52,17 @@ defmodule EmployeeRewardAppWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", EmployeeRewardAppWeb do
-  #   pipe_through :api
-  # end
+  scope "/api" do
+    pipe_through :api
+
+    if Mix.env() == :dev do
+      forward "/graphiql", Absinthe.Plug.GraphiQL,
+        schema: EmployeeRewardAppWeb.Schema,
+        interface: :playground
+    end
+
+    forward "/", Absinthe.Plug, schema: EmployeeRewardAppWeb.Schema
+  end
 
   # Enables LiveDashboard only for development
   #
