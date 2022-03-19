@@ -29,6 +29,15 @@ config :employee_reward_app, EmployeeRewardApp.Mailer,
   api_key: System.get_env("MAILGUN_API_KEY"),
   domain: System.get_env("MAILGUN_DOMAIN")
 
+config :employee_reward_app, :pow_assent,
+  providers: [
+    github: [
+      client_id: System.get_env("GITHUB_CLIENT_ID"),
+      client_secret: System.get_env("GITHUB_CLIENT_SECRET"),
+      strategy: Assent.Strategy.Github
+    ]
+  ]
+
 #       https: [
 #         ...,
 #         port: 443,
