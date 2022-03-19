@@ -53,5 +53,6 @@ defmodule EmployeeRewardAppWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  plug Pow.Plug.Session, otp_app: :employee_reward_app
   plug EmployeeRewardAppWeb.Router
 end
