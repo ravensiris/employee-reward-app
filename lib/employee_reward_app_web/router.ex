@@ -1,5 +1,6 @@
 defmodule EmployeeRewardAppWeb.Router do
   use EmployeeRewardAppWeb, :router
+  use Pow.Phoenix.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -14,8 +15,19 @@ defmodule EmployeeRewardAppWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", EmployeeRewardAppWeb do
+  pipeline :protected do
+    plug Pow.Plug.RequireAuthenticated,
+      error_handler: Pow.Phoenix.PlugErrorHandler
+  end
+
+  scope "/" do
     pipe_through :browser
+
+    pow_routes()
+  end
+
+  scope "/", EmployeeRewardAppWeb do
+    pipe_through [:browser, :protected]
 
     get "/", PageController, :index
   end
