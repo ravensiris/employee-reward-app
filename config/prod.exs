@@ -24,6 +24,11 @@ config :employee_reward_app, EmployeeRewardAppWeb.Endpoint,
   url: [scheme: "https", host: "secret-dawn-99555.herokuapp.com", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
+config :employee_reward_app, EmployeeRewardApp.Mailer,
+  adapter: Swoosh.Adapters.Mailgun,
+  api_key: System.get_env("MAILGUN_API_KEY"),
+  domain: System.get_env("MAILGUN_DOMAIN")
+
 #       https: [
 #         ...,
 #         port: 443,

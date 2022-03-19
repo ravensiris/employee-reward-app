@@ -6,7 +6,7 @@ defmodule EmployeeRewardApp.Mailer do
   def cast(%{user: user, subject: subject, text: text, html: html, assigns: _assigns}) do
     # Build email struct to be used in `process/1`
     new()
-    |> from("noreply@example.org")
+    |> from("noreply@secret-dawn-99555.herokuapp.com")
     |> to(user.email)
     |> subject(subject)
     |> text_body(text)
