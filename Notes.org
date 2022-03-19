@@ -43,5 +43,8 @@ Test Pow tomorrow.
 ** DONE Test Pow
 Done setting up Pow
 Additionally Redis is now required.
+Mailer used is Mailgun.
+** TODO Setup Pow Assent
 ** TODO Setup absinthe
 Just install with playground and create example endpoint
+** TODO Pow and absinthe integration
