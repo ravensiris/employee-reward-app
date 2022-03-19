@@ -1,8 +1,8 @@
-defmodule MyAppWeb.Pow.RedisCacheTest do
+defmodule EmployeeRewardAppWeb.Pow.RedisCacheTest do
   use ExUnit.Case
-  doctest MyAppWeb.Pow.RedisCache
+  doctest EmployeeRewardAppWeb.Pow.RedisCache
 
-  alias MyAppWeb.Pow.RedisCache
+  alias EmployeeRewardAppWeb.Pow.RedisCache
 
   @default_config [namespace: "test", ttl: :timer.hours(1)]
 

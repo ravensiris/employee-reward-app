@@ -1,4 +1,4 @@
-defmodule MyAppWeb.Pow.RedisCache do
+defmodule EmployeeRewardAppWeb.Pow.RedisCache do
   @moduledoc """
   Redis cache with optimized lookup.
 
