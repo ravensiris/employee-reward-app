@@ -40,7 +40,10 @@ config :phoenix, :json_library, Jason
 
 config :employee_reward_app, :pow,
   user: EmployeeRewardApp.Users.User,
-  repo: EmployeeRewardApp.Repo
+  repo: EmployeeRewardApp.Repo,
+  extensions: [PowResetPassword, PowEmailConfirmation],
+  controller_callbacks: Pow.Extension.Phoenix.ControllerCallbacks,
+  mailer_backend: EmployeeRewardApp.Mailer
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
