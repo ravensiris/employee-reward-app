@@ -46,6 +46,7 @@ Additionally Redis is now required.
 Mailer used is Mailgun.
 ** DONE Setup Pow Assent
 Did setup with github
-** TODO Setup absinthe
+** DONE Setup absinthe
 Just install with playground and create example endpoint
-** TODO Pow and absinthe integration
+** KILL Pow and absinthe integration
+Too complex
