@@ -50,3 +50,7 @@ Did setup with github
 Just install with playground and create example endpoint
 ** KILL Pow and absinthe integration
 Too complex
+*  Day 5
+** TODO User roles
+- Member
+- Admin
