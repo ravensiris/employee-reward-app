@@ -51,6 +51,11 @@ Just install with playground and create example endpoint
 ** KILL Pow and absinthe integration
 Too complex
 *  Day 5
-** TODO User roles
+** DONE User roles
 - Member
 - Admin
+** DONE User dashboard frontend
+Just a mock
+
+** TODO Transactions context
+Create necessary context for user->user transactions
