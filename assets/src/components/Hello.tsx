@@ -7,7 +7,7 @@ export default function Hello() {
 
   const email = data.me.email;
   return (
-    <section className="hero is-primary">
+    <section className="section hero is-primary">
       <div className="hero-body">
         <p className="title">Hello,</p>
         <p className="subtitle">{email}</p>
