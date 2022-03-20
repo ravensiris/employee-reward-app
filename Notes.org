@@ -57,5 +57,6 @@ Too complex
 ** DONE User dashboard frontend
 Just a mock
 
+** TODO Abinthe test 'me'
 ** TODO Transactions context
 Create necessary context for user->user transactions
