@@ -17,6 +17,8 @@ defmodule EmployeeRewardAppWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
+    plug EmployeeRewardAppWeb.AbsintheContext
   end
 
   pipeline :protected do
