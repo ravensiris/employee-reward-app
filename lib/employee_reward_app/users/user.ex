@@ -10,6 +10,7 @@ defmodule EmployeeRewardApp.Users.User do
   @foreign_key_type :binary_id
   schema "users" do
     pow_user_fields()
+    field :role, Ecto.Enum, values: [:member, :admin], default: :member
 
     timestamps()
   end
