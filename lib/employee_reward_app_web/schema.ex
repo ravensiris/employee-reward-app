@@ -8,6 +8,7 @@ defmodule EmployeeRewardAppWeb.Schema do
     field :id, :uuid4
     field :email, :string
     field :name, :string
+    field :role, :string
   end
 
   query do
@@ -17,7 +18,7 @@ defmodule EmployeeRewardAppWeb.Schema do
 
         case user do
           nil -> {:error, "user not logged in"}
-          user -> {:ok, Map.take(user, [:id, :email, :name])}
+          user -> {:ok, Map.take(user, [:id, :email, :name, :role])}
         end
       end)
     end
