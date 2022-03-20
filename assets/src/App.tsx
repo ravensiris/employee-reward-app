@@ -1,45 +1,27 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { useState, useCallback } from "react";
+import logo from "./logo.svg";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const increment = useCallback(() => {
+    setCount((count) => count + 1);
+  }, [setCount]);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
+    <section className="section">
+      <div className="container">
+        <img src={logo} alt="React logo" width={120} />
+        <h1 className="title">Hello World</h1>
+        <p className="subtitle">
+          A React app running on top of <strong>Phoenix</strong> and with
+          support for <strong>Bulma</strong> and <strong>SASS</strong>!
         </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+        <button className="button is-primary" onClick={increment}>
+          Click me: {count}
+        </button>
+      </div>
+    </section>
+  );
 }
 
-export default App
+export default App;
