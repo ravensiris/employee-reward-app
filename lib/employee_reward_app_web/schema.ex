@@ -12,7 +12,7 @@ defmodule EmployeeRewardAppWeb.Schema do
   end
 
   query do
-    field :test, :user do
+    field :me, :user do
       resolve(fn _, _, %{context: context} ->
         user = Map.get(context, :current_user)
 
