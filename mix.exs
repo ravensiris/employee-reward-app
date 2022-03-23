@@ -56,7 +56,8 @@ defmodule EmployeeRewardApp.MixProject do
       {:certifi, "~> 2.4"},
       {:ssl_verify_fun, "~> 1.1"},
       {:absinthe, "~> 1.7"},
-      {:absinthe_plug, "~> 1.5"}
+      {:absinthe_plug, "~> 1.5"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
 
