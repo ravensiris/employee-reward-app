@@ -117,12 +117,14 @@ defmodule EmployeeRewardAppWeb.Pow.RedisCacheTest do
     encoded_prefix =
       [@default_config[:namespace]]
       |> Kernel.++(List.wrap(key))
-      |> Enum.map(fn part ->
-        part
-        |> :erlang.term_to_binary()
-        |> Base.url_encode64(padding: false)
-      end)
-      |> Enum.join(":")
+      |> Enum.map_join(
+        ":",
+        fn part ->
+          part
+          |> :erlang.term_to_binary()
+          |> Base.url_encode64(padding: false)
+        end
+      )
 
     :redix
     |> Redix.command!(["ZRANGEBYSCORE", "_index:#{encoded_prefix}", "-inf", "+inf"])

@@ -279,13 +279,15 @@ defmodule EmployeeRewardAppWeb.Pow.RedisCache do
   defp namespace(config), do: Config.get(config, :namespace, "cache")
 
   defp to_binary_redis_key(key) do
-    key
-    |> Enum.map(fn part ->
-      part
-      |> :erlang.term_to_binary()
-      |> Base.url_encode64(padding: false)
-    end)
-    |> Enum.join(":")
+    Enum.map_join(
+      key,
+      ":",
+      fn part ->
+        part
+        |> :erlang.term_to_binary()
+        |> Base.url_encode64(padding: false)
+      end
+    )
   end
 
   defp from_binary_redis_key(key) do
