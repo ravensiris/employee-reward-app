@@ -50,13 +50,20 @@ Did setup with github
 Just install with playground and create example endpoint
 ** KILL Pow and absinthe integration
 Too complex
-*  Day 5
+* Day 5
 ** DONE User roles
 - Member
 - Admin
 ** DONE User dashboard frontend
 Just a mock
 
-** TODO Abinthe test 'me'
+* Day 8
+** DONE Absinthe test 'me'
+Added tests
+** DONE Code quality
+Now using credo and dialyzer
+** TODO Add login through Github button to Pow templates
+** TODO Add information about connected PowAssent providers in 'me'
+** TODO Add a button for connecting a PowAssent provider in frontend
 ** TODO Transactions context
 Create necessary context for user->user transactions
