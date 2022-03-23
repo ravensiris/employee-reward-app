@@ -7,6 +7,13 @@ defmodule EmployeeRewardApp.Users.User do
   use Pow.Extension.Ecto.Schema,
     extensions: [PowResetPassword, PowEmailConfirmation]
 
+  @type role() :: :member | :admin
+
+  @type t :: %__MODULE__{
+          id: Ecto.UUID.t() | nil,
+          email: String.t() | nil,
+          role: role() | nil
+        }
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "users" do
