@@ -1,4 +1,7 @@
 defmodule EmployeeRewardAppWeb.Schema.Types.User do
+  @moduledoc """
+  User object definition for Absinthe
+  """
   use Absinthe.Schema.Notation
   alias EmployeeRewardAppWeb.Schema
 
