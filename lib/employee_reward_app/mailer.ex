@@ -14,6 +14,16 @@ defmodule EmployeeRewardApp.Mailer do
   end
 
   @impl true
+  @spec cast(%{
+          :html => binary,
+          :subject => binary,
+          :text => binary,
+          :user => atom | %{:email => any, optional(any) => any},
+          optional(any) => any
+        }) :: Swoosh.Email.t()
+  @doc """
+  Creates a user confirmation Swoosh.Email.t() from data supplied by Pow
+  """
   def cast(%{user: user, subject: subject, text: text, html: html}) do
     html = replace_example_com(html)
     text = replace_example_com(text)
@@ -27,6 +37,10 @@ defmodule EmployeeRewardApp.Mailer do
   end
 
   @impl true
+  @spec process(Swoosh.Email.t()) :: :ok
+  @doc """
+  Sends a user confirmation email asyncronously
+  """
   def process(email) do
     # An asynchronous process should be used here to prevent enumeration
     # attacks. Synchronous e-mail delivery can reveal whether a user already
