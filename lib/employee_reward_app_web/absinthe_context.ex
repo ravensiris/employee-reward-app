@@ -1,4 +1,7 @@
 defmodule EmployeeRewardAppWeb.AbsintheContext do
+  @moduledoc """
+  This module puts additional context for Absinthe resolvers.
+  """
   @behaviour Plug
 
   import Plug.Conn
