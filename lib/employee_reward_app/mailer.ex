@@ -1,4 +1,5 @@
 defmodule EmployeeRewardApp.Mailer do
+  @moduledoc false
   use Pow.Phoenix.Mailer
   use Swoosh.Mailer, otp_app: :employee_reward_app
 

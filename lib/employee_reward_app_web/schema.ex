@@ -1,4 +1,5 @@
 defmodule EmployeeRewardAppWeb.Schema do
+  @moduledoc false
   use Absinthe.Schema
   alias EmployeeRewardAppWeb.Schema
   alias EmployeeRewardApp.Resolvers

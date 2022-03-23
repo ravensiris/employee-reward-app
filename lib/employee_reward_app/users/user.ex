@@ -1,4 +1,5 @@
 defmodule EmployeeRewardApp.Users.User do
+  @moduledoc false
   use Ecto.Schema
   use Pow.Ecto.Schema
   use PowAssent.Ecto.Schema
