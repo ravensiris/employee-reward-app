@@ -2,14 +2,7 @@ defmodule EmployeeRewardAppWeb.Schema do
   use Absinthe.Schema
   alias EmployeeRewardAppWeb.Schema
 
-  import_types(Schema.Types.UUID4)
-
-  object :user do
-    field :id, :uuid4
-    field :email, :string
-    field :name, :string
-    field :role, :string
-  end
+  import_types(Schema.Types.User)
 
   query do
     field :me, :user do
