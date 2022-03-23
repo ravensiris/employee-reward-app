@@ -18,7 +18,7 @@ defmodule EmployeeRewardAppWeb.Schema do
 
         case user do
           nil -> {:error, "user not logged in"}
-          user -> {:ok, Map.take(user, [:id, :email, :name, :role])}
+          user -> {:ok, Map.take(user, [:id, :email, :role])}
         end
       end)
     end
