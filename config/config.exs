@@ -44,7 +44,8 @@ config :employee_reward_app, :pow,
   extensions: [PowResetPassword, PowEmailConfirmation],
   controller_callbacks: Pow.Extension.Phoenix.ControllerCallbacks,
   mailer_backend: EmployeeRewardApp.Mailer,
-  cache_store_backend: EmployeeRewardAppWeb.Pow.RedisCache
+  cache_store_backend: EmployeeRewardAppWeb.Pow.RedisCache,
+  web_module: EmployeeRewardAppWeb
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

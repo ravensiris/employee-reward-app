@@ -45,6 +45,8 @@ defmodule EmployeeRewardAppWeb.Router do
     pow_routes()
     pow_extension_routes()
     pow_assent_routes()
+    get "/registration", EmployeeRewardAppWeb.Redirect, to: "/registration/new"
+    get "/session", EmployeeRewardAppWeb.Redirect, to: "/session/new"
   end
 
   scope "/", EmployeeRewardAppWeb do
