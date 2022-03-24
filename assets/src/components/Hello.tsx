@@ -5,12 +5,12 @@ export default function Hello() {
   const { loading, error, data } = useQuery<MeQuery>(GET_ME);
   if (loading || error || !data) return <></>;
 
-  const email = data.me.email;
+  const name = data.me.name || data.me.email;
   return (
     <section className="section hero is-primary">
       <div className="hero-body">
         <p className="title">Hello,</p>
-        <p className="subtitle">{email}</p>
+        <p className="subtitle">{name}</p>
       </div>
     </section>
   );
