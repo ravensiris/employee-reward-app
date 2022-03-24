@@ -1,4 +1,10 @@
-import { Buttons, CSRFToken, Input, Title } from "$components/Authentication";
+import {
+  Buttons,
+  CSRFToken,
+  ErrorMessage,
+  Input,
+  Title,
+} from "$components/Authentication";
 import { useEffect, useState } from "react";
 
 export default function SignIn() {
@@ -11,6 +17,7 @@ export default function SignIn() {
       <Title>Sign in</Title>
       <form method="post" className="section">
         <CSRFToken />
+        <ErrorMessage />
         <Input>Email</Input>
         <Input>Password</Input>
         <Buttons />
