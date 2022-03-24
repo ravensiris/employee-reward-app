@@ -11,7 +11,9 @@ const client = new ApolloClient({
   cache: cache,
 });
 
-ReactDOM.render(
+const rootElement = document.getElementById("root");
+
+ReactDOM.hydrate(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <BrowserRouter>
@@ -19,5 +21,5 @@ ReactDOM.render(
       </BrowserRouter>
     </ApolloProvider>
   </React.StrictMode>,
-  document.getElementById("root")
+  rootElement
 );
