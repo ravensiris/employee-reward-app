@@ -5,17 +5,14 @@
     </div>
   </section>
   <%= form_for @changeset, @action, [as: :user, class: "section"], fn f -> %>
-    <%= if @changeset.action do %>
-      <div class="alert alert-danger">
-        <p>Oops, something went wrong! Please check the errors below.</p>
-      </div>
-    <% end %>
     <div class="field">
       <%= label f, Pow.Ecto.Schema.user_id_field(@changeset) %>
       <div class="control">
         <%= email_input f, Pow.Ecto.Schema.user_id_field(@changeset),
         [class: "input", placeholder: "e.g john.smith@example.org"] %>
-        <%= error_tag f, Pow.Ecto.Schema.user_id_field(@changeset) %>
+        <span class="input-error">
+          <%= error_tag f, Pow.Ecto.Schema.user_id_field(@changeset) %>
+        </span>
       </div>
     </div>
 
@@ -23,7 +20,9 @@
       <%= label f, :password %>
       <div class="control">
         <%= password_input f, :password, [class: "input", placeholder: "e.g Extr4St0ngP455w0rd"] %>
+        <span class="input-error">
         <%= error_tag f, :password %>
+        </span>
       </div>
     </div>
 

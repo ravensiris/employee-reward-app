@@ -12,6 +12,9 @@ export default function Input({ children }: InputProps) {
       <label>{children}</label>
       <div>
         <input />
+        <span className="input-error">
+          <span dangerouslySetInnerHTML={{ __html: "" }} />
+        </span>
       </div>
     </div>
   );
