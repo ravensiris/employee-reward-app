@@ -9,10 +9,6 @@ defmodule EmployeeRewardApp.Mailer do
 
   alias EmployeeRewardAppWeb.Endpoint
 
-  defp replace_example_com(text) do
-    String.replace(text, "http://example.com", Endpoint.url())
-  end
-
   @impl true
   @spec cast(%{
           :html => binary,
@@ -25,9 +21,6 @@ defmodule EmployeeRewardApp.Mailer do
   Creates a user confirmation Swoosh.Email.t() from data supplied by Pow
   """
   def cast(%{user: user, subject: subject, text: text, html: html}) do
-    html = replace_example_com(html)
-    text = replace_example_com(text)
-
     %Swoosh.Email{}
     |> to({"", user.email})
     |> from({"Employee Reward App", "noreply@#{Endpoint.host()}"})
