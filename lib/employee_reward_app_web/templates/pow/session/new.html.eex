@@ -1,24 +1,46 @@
-<h1>Sign in</h1>
+<div id="root">
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <p class="title">Sign in</p>
+    </div>
+  </section>
+  <%= form_for @changeset, @action, [as: :user, class: "section"], fn f -> %>
+    <%= if @changeset.action do %>
+      <div class="alert alert-danger">
+        <p>Oops, something went wrong! Please check the errors below.</p>
+      </div>
+    <% end %>
+    <div class="field">
+      <%= label f, Pow.Ecto.Schema.user_id_field(@changeset) %>
+      <div class="control">
+        <%= email_input f, Pow.Ecto.Schema.user_id_field(@changeset),
+        [class: "input", placeholder: "e.g john.smith@example.org"] %>
+        <%= error_tag f, Pow.Ecto.Schema.user_id_field(@changeset) %>
+      </div>
+    </div>
 
-<%= form_for @changeset, @action, [as: :user], fn f -> %>
-  <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+    <div class="field">
+      <%= label f, :password %>
+      <div class="control">
+        <%= password_input f, :password, [class: "input", placeholder: "e.g Extr4St0ngP455w0rd"] %>
+        <%= error_tag f, :password %>
+      </div>
+    </div>
+
+    <div class="field is-grouped is-grouped-multiline is-grouped-centered">
+      <div class="control">
+        <%= submit "Sign in", [class: "button is-primary"] %>
+      </div>
+      <div class="control">
+        <span class="button is-primary is-light">
+          <%= link "Register", to: Routes.pow_registration_path(@conn, :new) %>
+        </span>
+      </div>
+      <%= for link <- PowAssent.Phoenix.ViewHelpers.provider_links(@conn) do %>
+        <div class="control">
+          <%= content_tag(:span, link, class: "button") %>
+        </div>
+      <% end %>
     </div>
   <% end %>
-
-  <%= label f, Pow.Ecto.Schema.user_id_field(@changeset) %>
-  <%= text_input f, Pow.Ecto.Schema.user_id_field(@changeset) %>
-  <%= error_tag f, Pow.Ecto.Schema.user_id_field(@changeset) %>
-
-  <%= label f, :password %>
-  <%= password_input f, :password %>
-  <%= error_tag f, :password %>
-
-  <div>
-    <%= submit "Sign in" %>
-  </div>
-<% end %>
-
-
-<span><%= link "Register", to: Routes.pow_registration_path(@conn, :new) %></span>
+</div>
