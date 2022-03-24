@@ -76,7 +76,7 @@ defmodule EmployeeRewardAppWeb.MeTest do
   test "query: me as unauthorized user", %{conn: conn} do
     conn = query_me(conn)
 
-    assert %{"data" => %{"me" => nil}, "errors" => [%{"message" => "user not logged in"}]} =
+    assert %{"data" => %{"me" => nil}, "errors" => [%{"message" => "user not signed in"}]} =
              json_response(conn, 200)
   end
 end
