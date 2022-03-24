@@ -14,6 +14,7 @@ export default function SignIn() {
         <CSRFToken />
         <ErrorMessage />
         <Input>Email</Input>
+        <Input>Name</Input>
         <Input>Password</Input>
         <Input>Confirm password</Input>
         <Buttons />

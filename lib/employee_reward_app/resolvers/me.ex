@@ -9,7 +9,7 @@ defmodule EmployeeRewardApp.Resolvers.Me do
 
     case user do
       nil -> {:error, "user not logged in"}
-      user -> {:ok, Map.take(user, [:id, :email, :role])}
+      user -> {:ok, Map.take(user, [:id, :email, :role, :name])}
     end
   end
 end

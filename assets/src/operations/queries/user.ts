@@ -4,12 +4,14 @@ export const GET_ME = gql`
   query getMe {
     me {
       email
+      name
     }
   }
 `
 
 export interface User {
     email: string;
+    name: string;
 }
 
 export interface MeQuery {
