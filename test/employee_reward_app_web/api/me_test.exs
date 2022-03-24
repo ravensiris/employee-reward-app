@@ -7,6 +7,7 @@ defmodule EmployeeRewardAppWeb.MeTest do
         id
         email
         role
+        name
     }
   }
   """
@@ -14,7 +15,8 @@ defmodule EmployeeRewardAppWeb.MeTest do
   setup %{conn: conn} do
     user = %EmployeeRewardApp.Users.User{
       email: "john.doe@example.org",
-      id: "ea35faa3-a465-41a5-a6eb-6e9abef58326"
+      id: "ea35faa3-a465-41a5-a6eb-6e9abef58326",
+      name: "John Doe"
     }
 
     member_conn = Pow.Plug.assign_current_user(conn, user, [])
@@ -26,7 +28,8 @@ defmodule EmployeeRewardAppWeb.MeTest do
     admin = %EmployeeRewardApp.Users.User{
       email: "admin@example.org",
       id: "1e064793-ea8d-4110-b2e1-4d8e570ab7df",
-      role: :admin
+      role: :admin,
+      name: "Admin"
     }
 
     admin_conn = Pow.Plug.assign_current_user(conn, admin, [])
@@ -48,7 +51,8 @@ defmodule EmployeeRewardAppWeb.MeTest do
                "me" => %{
                  "id" => "ea35faa3-a465-41a5-a6eb-6e9abef58326",
                  "email" => "john.doe@example.org",
-                 "role" => "member"
+                 "role" => "member",
+                 "name" => "John Doe"
                }
              }
            }
@@ -62,7 +66,8 @@ defmodule EmployeeRewardAppWeb.MeTest do
                "me" => %{
                  "id" => "1e064793-ea8d-4110-b2e1-4d8e570ab7df",
                  "email" => "admin@example.org",
-                 "role" => "admin"
+                 "role" => "admin",
+                 "name" => "Admin"
                }
              }
            }
