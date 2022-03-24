@@ -62,8 +62,11 @@ Just a mock
 Added tests
 ** DONE Code quality
 Now using credo and dialyzer
-** TODO Add login through Github button to Pow templates
-** TODO Add information about connected PowAssent providers in 'me'
-** TODO Add a button for connecting a PowAssent provider in frontend
+* Day 9
+** DONE Add login through Github button to Pow templates
+** DONE Pow templates and React integration
+Should add validation on React side later
+** HOLD Add information about connected PowAssent providers in 'me'
+** HOLD Add a button for connecting a PowAssent provider in frontend
 ** TODO Transactions context
 Create necessary context for user->user transactions
