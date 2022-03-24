@@ -17,6 +17,16 @@
     </div>
 
     <div class="field">
+      <%= label f, :name %>
+      <div class="control">
+        <%= text_input f, :name , [class: "input", placeholder: "e.g John Doe"] %>
+        <span class="input-error">
+          <%= error_tag f, :name %>
+        </span>
+      </div>
+    </div>
+
+    <div class="field">
       <%= label f, :password %>
       <div class="control">
         <%= password_input f, :password, [class: "input", placeholder: "e.g Extr4St0ngP455w0rd"] %>
