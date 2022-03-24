@@ -1,5 +1,6 @@
 import App from "$/App";
-import { cache } from "$/cache";
+import { cache, errorFlashStateVar, infoFlashStateVar } from "$/cache";
+import Flash from "$components/Flash";
 import "$sass/app.sass";
 import { ApolloClient, ApolloProvider } from "@apollo/client";
 import React from "react";
@@ -22,4 +23,19 @@ ReactDOM.hydrate(
     </ApolloProvider>
   </React.StrictMode>,
   rootElement
+);
+
+const flashErrorElement = document.getElementById("flash-error");
+ReactDOM.hydrate(
+  <React.StrictMode>
+    <Flash flashState={errorFlashStateVar} />
+  </React.StrictMode>,
+  flashErrorElement
+);
+const flashInfoElement = document.getElementById("flash-info");
+ReactDOM.hydrate(
+  <React.StrictMode>
+    <Flash flashState={infoFlashStateVar} />
+  </React.StrictMode>,
+  flashInfoElement
 );
