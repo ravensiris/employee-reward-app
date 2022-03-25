@@ -21,9 +21,8 @@ defmodule EmployeeRewardAppWeb.AbsintheContext do
   Fetch current_user from session
   """
   def build_context(conn) do
-    with {:ok, current_user} <- authorize(conn) do
-      %{current_user: current_user}
-    else
+    case authorize(conn) do
+      {:ok, current_user} -> %{current_user: current_user, is_admin: admin?(current_user)}
       _ -> %{}
     end
   end
@@ -34,4 +33,10 @@ defmodule EmployeeRewardAppWeb.AbsintheContext do
       current_user -> {:ok, current_user}
     end
   end
+
+  defp admin?(%{role: role}) do
+    role == :admin
+  end
+
+  defp admin?(_), do: false
 end
