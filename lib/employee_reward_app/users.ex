@@ -1,4 +1,5 @@
 defmodule EmployeeRewardApp.Users do
+  @moduledoc false
   import Ecto.Query
   alias EmployeeRewardApp.Users.User
   alias EmployeeRewardApp.Repo

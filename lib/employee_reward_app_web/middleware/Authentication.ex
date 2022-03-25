@@ -1,4 +1,7 @@
 defmodule EmployeeRewardAppWeb.Middleware.Authentication do
+  @moduledoc """
+  Authentication middleware for throwing errors when user is not signed in.
+  """
   @behaviour Absinthe.Middleware
 
   @spec call(Absinthe.Resolution.t(), term()) :: Absinthe.Resolution.t()
