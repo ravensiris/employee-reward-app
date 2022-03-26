@@ -1,4 +1,4 @@
-defmodule EmployeeRewardAppWeb.MeTest do
+defmodule EmployeeRewardAppWeb.APIMeTest do
   use EmployeeRewardAppWeb.ConnCase
 
   @me_query """

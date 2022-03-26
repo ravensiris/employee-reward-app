@@ -1,4 +1,4 @@
-defmodule EmployeeRewardAppWeb.UserTest do
+defmodule EmployeeRewardAppWeb.APIUserTest do
   use EmployeeRewardAppWeb.ConnCase
   alias EmployeeRewardApp.Repo
   alias EmployeeRewardApp.Users.User
