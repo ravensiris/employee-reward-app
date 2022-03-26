@@ -8,6 +8,8 @@ import ReactDOM from "react-dom"
 import { BrowserRouter } from "react-router-dom"
 import PowApp from "./PowApp"
 
+const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === "development"
+
 const client = new ApolloClient({
   uri: "/api",
   cache: cache,
@@ -22,6 +24,13 @@ const AppApolloProvider = ({ children }: AppApolloProviderProps) => {
 
 const powFormElement = document.getElementById("pow-form")
 if (powFormElement !== null) {
+  // stop hydrate from complaining about whitespace
+  if (isDev) {
+    powFormElement.innerHTML = powFormElement.innerHTML.replace(
+      /(?<=>|^)\s+(?=<|$)/g,
+      ""
+    )
+  }
   ReactDOM.hydrate(
     <React.StrictMode>
       <AppApolloProvider>
