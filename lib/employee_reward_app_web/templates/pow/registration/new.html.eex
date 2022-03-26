@@ -55,6 +55,9 @@
           <%= link "Sign in", to: Routes.pow_session_path(@conn, :new) %>
         </span>
       </div>
+    </div>
+
+    <div class="field is-grouped is-grouped-multiline is-grouped-centered">
       <%= for link <- PowAssent.Phoenix.ViewHelpers.provider_links(@conn) do %>
         <div class="control">
           <%= content_tag(:span, link, class: "button") %>

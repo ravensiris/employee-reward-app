@@ -1,6 +1,6 @@
 import React from "react"
 
-interface InputProps {
+export interface Props {
   /** Input's label text */
   children?: React.ReactNode
 }
@@ -8,15 +8,17 @@ interface InputProps {
 /**
  * Placeholder for an input form field that is supposed to be hydrated in.
  */
-export default function Input({ children }: InputProps) {
+export default function Input({ children }: Props) {
   return (
-    <div>
-      <label>{children}</label>
-      <div>
-        <input />
-        <span className="input-error">
-          <span dangerouslySetInnerHTML={{ __html: "" }} />
-        </span>
+    <div className="field">
+      <label suppressHydrationWarning>{children}</label>
+      <div className="control">
+        <input className="input" suppressHydrationWarning />
+        <span
+          className="input-error"
+          dangerouslySetInnerHTML={{ __html: "" }}
+          suppressHydrationWarning
+        />
       </div>
     </div>
   )

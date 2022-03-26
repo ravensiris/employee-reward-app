@@ -1,6 +1,6 @@
 import React from "react"
 
-interface SubmitProps {
+export interface Props {
   /** Button's inner text */
   children?: React.ReactNode
 }
@@ -8,10 +8,12 @@ interface SubmitProps {
 /**
  * Placeholder for a submit button that is supposed to be hydrated in.
  */
-export default function Submit({ children }: SubmitProps) {
+export default function Submit({ children }: Props) {
   return (
-    <div>
-      <button>{children}</button>
+    <div className="control">
+      <button className="button is-primary" type="submit">
+        {children}
+      </button>
     </div>
   )
 }

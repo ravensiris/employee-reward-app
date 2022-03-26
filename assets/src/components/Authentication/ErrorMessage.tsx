@@ -12,20 +12,16 @@ export default function ErrorMessage() {
     errorFlashStateVar({ consumed: true })
   }
   useEffect(consumeMessage, [])
-  if (message && !errorState.consumed) {
-    return (
-      <article className="message is-danger">
-        <div className="message-header">
-          <p>Error</p>
-          <button
-            className="delete"
-            aria-label="delete"
-            onClick={clearMessage}
-          />
-        </div>
-        <div className="message-body">{message}</div>
-      </article>
-    )
+  if (!message || errorState.consumed) {
+    return <></>
   }
-  return <></>
+  return (
+    <article className="message is-danger">
+      <div className="message-header">
+        <p>Error</p>
+        <button className="delete" aria-label="delete" onClick={clearMessage} />
+      </div>
+      <div className="message-body">{message}</div>
+    </article>
+  )
 }

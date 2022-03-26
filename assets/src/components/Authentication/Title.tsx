@@ -1,6 +1,6 @@
 import React from "react"
 
-interface InputProps {
+interface Props {
   /** Title text */
   children?: React.ReactNode
 }
@@ -8,11 +8,11 @@ interface InputProps {
 /**
  * Placeholder for a title section that is supposed to be hydrated in.
  */
-export default function Input({ children }: InputProps) {
+export default function Title({ children }: Props) {
   return (
-    <section>
-      <div>
-        <p>{children}</p>
+    <section className="hero is-primary">
+      <div className="hero-body">
+        <p className="title">{children}</p>
       </div>
     </section>
   )
