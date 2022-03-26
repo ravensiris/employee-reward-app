@@ -9,11 +9,16 @@ defmodule EmployeeRewardApp.Users do
   Fuzzy search for a User.
 
   `term` is User's name.
+  `term` can include User's id after '@' symbol
+  `term` can be just User's id if begins with '@' symbol
 
   Returns a list of matching Users
   """
   def search_users(term) do
-    name = term
+    [name | rest] = String.split(term, "@")
+    id = List.last(rest) || ""
+    name_prefix = String.slice(name, 0..1)
+    id_prefix = String.slice(id, 0..1)
 
     data_query =
       from u in User,
@@ -21,12 +26,16 @@ defmodule EmployeeRewardApp.Users do
           id: u.id,
           name: u.name,
           email: u.email,
-          name_clipped: fragment("SUBSTR(?, 0, LENGTH(?) + 1)", u.name, ^name)
+          name_clipped: fragment("SUBSTR(?, 0, LENGTH(?) + 1)", u.name, ^name),
+          id_prefix: fragment("SPLIT_PART(?, '-', 1)", type(u.id, :string))
         }
 
     from(
       u in subquery(data_query),
-      order_by: fragment("LEVENSHTEIN(?, ?)", u.name_clipped, ^name),
+      where: ilike(u.name, ^"#{name_prefix}%"),
+      where: ilike(u.id_prefix, ^"#{id_prefix}%"),
+      order_by:
+        fragment("LEVENSHTEIN(?, ?) + LEVENSHTEIN(?, ?)", u.name_clipped, ^name, u.id_prefix, ^id),
       limit: 5
     )
     |> Repo.all()
