@@ -8,7 +8,12 @@ function NavLink({ children, to, ...props }: LinkProps) {
   const resolved = useResolvedPath(to)
   const match = useMatch({ path: resolved.pathname, end: true })
   return (
-    <Link className={`navbar-item ${match && "is-active"}`} to={to} {...props}>
+    <Link
+      onClick={() => navbarStateVar({ hidden: true })}
+      className={`navbar-item ${match && "is-active"}`}
+      to={to}
+      {...props}
+    >
       {children}
     </Link>
   )
