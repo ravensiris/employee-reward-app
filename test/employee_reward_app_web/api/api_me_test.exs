@@ -18,40 +18,42 @@ defmodule EmployeeRewardAppWeb.APIMeTest do
     })
   end
 
-  test "query: me as a member", %{member_conn: conn} do
-    conn = query_me(conn)
+  describe "query 'me'" do
+    test "as a member", %{member_conn: conn} do
+      conn = query_me(conn)
 
-    assert json_response(conn, 200) == %{
-             "data" => %{
-               "me" => %{
-                 "id" => "ea35faa3-a465-41a5-a6eb-6e9abef58326",
-                 "email" => "john.doe@example.org",
-                 "role" => "member",
-                 "name" => "John Doe"
+      assert json_response(conn, 200) == %{
+               "data" => %{
+                 "me" => %{
+                   "id" => "ea35faa3-a465-41a5-a6eb-6e9abef58326",
+                   "email" => "john.doe@example.org",
+                   "role" => "member",
+                   "name" => "John Doe"
+                 }
                }
              }
-           }
-  end
+    end
 
-  test "query: me as an admin", %{admin_conn: conn} do
-    conn = query_me(conn)
+    test "as an admin", %{admin_conn: conn} do
+      conn = query_me(conn)
 
-    assert json_response(conn, 200) == %{
-             "data" => %{
-               "me" => %{
-                 "id" => "1e064793-ea8d-4110-b2e1-4d8e570ab7df",
-                 "email" => "admin@example.org",
-                 "role" => "admin",
-                 "name" => "Admin"
+      assert json_response(conn, 200) == %{
+               "data" => %{
+                 "me" => %{
+                   "id" => "1e064793-ea8d-4110-b2e1-4d8e570ab7df",
+                   "email" => "admin@example.org",
+                   "role" => "admin",
+                   "name" => "Admin"
+                 }
                }
              }
-           }
-  end
+    end
 
-  test "query: me as unauthorized user", %{conn: conn} do
-    conn = query_me(conn)
+    test "query: me as unauthorized user", %{conn: conn} do
+      conn = query_me(conn)
 
-    assert %{"data" => %{"me" => nil}, "errors" => [%{"message" => "user not signed in"}]} =
-             json_response(conn, 200)
+      assert %{"data" => %{"me" => nil}, "errors" => [%{"message" => "user not signed in"}]} =
+               json_response(conn, 200)
+    end
   end
 end
