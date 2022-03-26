@@ -24,18 +24,18 @@ defmodule EmployeeRewardApp.Users do
       from u in User,
         select: %{
           id: u.id,
-          name: u.name,
-          email: u.email,
           name_clipped: fragment("SUBSTR(?, 0, LENGTH(?) + 1)", u.name, ^name),
           id_prefix: fragment("SPLIT_PART(?, '-', 1)", type(u.id, :string))
         }
 
     from(
-      u in subquery(data_query),
+      u in User,
+      join: d in subquery(data_query),
+      on: d.id == u.id,
       where: ilike(u.name, ^"#{name_prefix}%"),
-      where: ilike(u.id_prefix, ^"#{id_prefix}%"),
+      where: ilike(d.id_prefix, ^"#{id_prefix}%"),
       order_by:
-        fragment("LEVENSHTEIN(?, ?) + LEVENSHTEIN(?, ?)", u.name_clipped, ^name, u.id_prefix, ^id),
+        fragment("LEVENSHTEIN(?, ?) + LEVENSHTEIN(?, ?)", d.name_clipped, ^name, d.id_prefix, ^id),
       limit: 5
     )
     |> Repo.all()
