@@ -1,7 +1,6 @@
 defmodule EmployeeRewardAppWeb.APIUserTest do
   use EmployeeRewardAppWeb.ConnCase
-  alias EmployeeRewardApp.Repo
-  alias EmployeeRewardApp.Users.User
+  import EmployeeRewardApp.Factory
 
   @search_user_query """
   query searchUser($name: String!){
@@ -14,90 +13,102 @@ defmodule EmployeeRewardAppWeb.APIUserTest do
   }
   """
 
-  @valid_attrs %{
-    name: "John Doe",
-    email: "john.doe@example.org",
-    password: "johnnyDoe123",
-    password_confirmation: "johnnyDoe123"
-  }
-
-  def user_fixture(attrs \\ %{}) do
-    attrs = Map.merge(@valid_attrs, attrs)
-
-    %User{}
-    |> User.changeset(attrs)
-    |> Repo.insert()
+  defp stringify_user(user) do
+    user
+    |> Map.from_struct()
+    |> Map.take([:email, :id, :name, :role])
+    |> Map.new(fn {k, v} -> {to_string(k), to_string(v)} end)
   end
 
   setup do
-    {:ok, user} = user_fixture()
+    janes =
+      insert_list(10, :user, %{name: "Jane Smith"})
+      |> Enum.map(&stringify_user/1)
 
-    user =
-      user
-      |> Map.from_struct()
-      |> Map.take([:email, :id, :name, :role])
-      |> Map.new(fn {k, v} -> {to_string(k), to_string(v)} end)
-
-    {:ok, users: [user]}
+    {:ok, janes: janes}
   end
 
-  setup %{conn: conn} do
-    user = %EmployeeRewardApp.Users.User{
-      email: "john.doe@example.org",
-      id: "ea35faa3-a465-41a5-a6eb-6e9abef58326",
-      name: "John Doe"
-    }
-
-    member_conn = Pow.Plug.assign_current_user(conn, user, [])
-
-    {:ok, conn: conn, member_conn: member_conn}
-  end
-
-  setup %{conn: conn} do
-    admin = %EmployeeRewardApp.Users.User{
-      email: "admin@example.org",
-      id: "1e064793-ea8d-4110-b2e1-4d8e570ab7df",
-      role: :admin,
-      name: "Admin"
-    }
-
-    admin_conn = Pow.Plug.assign_current_user(conn, admin, [])
-
-    {:ok, conn: conn, admin_conn: admin_conn}
-  end
-
-  defp query_users(conn, name \\ "john") do
+  defp query_users(conn, name \\ "jane") do
     post(conn, "/api", %{
       "query" => @search_user_query,
       "variables" => %{name: name}
     })
+    |> json_response(200)
   end
 
-  test "query: users as a member", %{member_conn: conn, users: users} do
-    conn = query_users(conn)
-    users = Enum.map(users, &Map.merge(&1, %{"role" => nil, "email" => nil}))
-
-    assert json_response(conn, 200) == %{
-             "data" => %{
-               "users" => users
-             }
-           }
+  defp result_ids(result) do
+    result["data"]["users"]
+    |> Enum.map(&Map.get(&1, "id"))
   end
 
-  test "query: me as an admin", %{admin_conn: conn, users: users} do
-    conn = query_users(conn)
-
-    assert json_response(conn, 200) == %{
-             "data" => %{
-               "users" => users
-             }
-           }
+  defp member_censored_user(user) do
+    Map.merge(user, %{"email" => nil, "role" => nil})
   end
 
-  test "query: me as unauthorized user", %{conn: conn, users: users} do
-    conn = query_users(conn)
+  defp expected_janes(result, janes, admin \\ false) do
+    expected_ids = result_ids(result)
 
-    assert %{"data" => %{"users" => nil}, "errors" => [%{"message" => "user not signed in"}]} =
-             json_response(conn, 200)
+    expected =
+      janes
+      |> Enum.filter(fn jane -> jane["id"] in expected_ids end)
+
+    expected =
+      if admin do
+        expected
+      else
+        Enum.map(expected, &member_censored_user/1)
+      end
+
+    %{"data" => %{"users" => expected}}
+  end
+
+  describe "query 'users' as a member" do
+    test "find janes by name", %{member_conn: conn, janes: janes} do
+      result = query_users(conn)
+      expected = expected_janes(result, janes)
+
+      assert length(result["data"]["users"]) == 5
+      assert result == expected
+    end
+
+    test "find jane by id", %{member_conn: conn, janes: janes} do
+      jane =
+        List.last(janes)
+        |> member_censored_user()
+
+      jane_clipped_id =
+        jane["id"]
+        |> String.split("-")
+        |> List.first()
+
+      result = query_users(conn, "@#{jane_clipped_id}")
+      expected = %{"data" => %{"users" => [jane]}}
+
+      assert result == expected
+    end
+  end
+
+  describe "query 'users' as an admin" do
+    test "find janes by name", %{admin_conn: conn, janes: janes} do
+      result = query_users(conn)
+      expected = expected_janes(result, janes, true)
+
+      assert length(result["data"]["users"]) == 5
+      assert result == expected
+    end
+
+    test "find jane by id", %{admin_conn: conn, janes: janes} do
+      jane = List.last(janes)
+
+      jane_clipped_id =
+        jane["id"]
+        |> String.split("-")
+        |> List.first()
+
+      result = query_users(conn, "@#{jane_clipped_id}")
+      expected = %{"data" => %{"users" => [jane]}}
+
+      assert result == expected
+    end
   end
 end
