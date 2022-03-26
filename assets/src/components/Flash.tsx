@@ -15,12 +15,10 @@ export default function Flash({ flashState }: FlashProps) {
     }
   }, [])
   return (
-    <>
-      <span
-        id="message"
-        ref={messageElemRef}
-        dangerouslySetInnerHTML={{ __html: "" }}
-      />
-    </>
+    <span
+      id="message"
+      ref={messageElemRef}
+      dangerouslySetInnerHTML={{ __html: "" }}
+    />
   )
 }
