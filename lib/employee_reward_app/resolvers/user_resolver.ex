@@ -1,4 +1,4 @@
-defmodule EmployeeRewardApp.Resolvers.User do
+defmodule EmployeeRewardApp.Resolvers.UserResolver do
   alias EmployeeRewardApp.Users
 
   @moduledoc """

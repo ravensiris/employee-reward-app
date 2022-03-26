@@ -11,14 +11,14 @@ defmodule EmployeeRewardAppWeb.Schema do
     @desc "Get current user"
     field :me, :user do
       middleware(Middleware.Authentication)
-      resolve(&Resolvers.Me.show_me/3)
+      resolve(&Resolvers.MeResolver.show_me/3)
     end
 
     @desc "Find user by name with fuzzy search"
     field :users, list_of(:user) do
       middleware(Middleware.Authentication)
       arg(:name, non_null(:string))
-      resolve(&Resolvers.User.search_user/3)
+      resolve(&Resolvers.UserResolver.search_user/3)
     end
   end
 end
