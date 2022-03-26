@@ -49,12 +49,6 @@ defmodule EmployeeRewardAppWeb.Router do
     get "/session", EmployeeRewardAppWeb.Redirect, to: "/session/new"
   end
 
-  scope "/", EmployeeRewardAppWeb do
-    pipe_through [:browser, :protected]
-
-    get "/", PageController, :index
-  end
-
   # Other scopes may use custom stacks.
   scope "/api" do
     pipe_through :api
@@ -95,5 +89,11 @@ defmodule EmployeeRewardAppWeb.Router do
 
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
+  end
+
+  scope "/", EmployeeRewardAppWeb do
+    pipe_through [:browser, :protected]
+
+    get "/*path", PageController, :index
   end
 end

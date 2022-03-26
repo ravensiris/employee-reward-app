@@ -1,6 +1,8 @@
+import React from "react"
+
 interface InputProps {
   /** Title text */
-  children?: React.ReactNode;
+  children?: React.ReactNode
 }
 
 /**
@@ -13,5 +15,5 @@ export default function Input({ children }: InputProps) {
         <p>{children}</p>
       </div>
     </section>
-  );
+  )
 }

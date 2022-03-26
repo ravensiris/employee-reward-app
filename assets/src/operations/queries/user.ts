@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@apollo/client"
 
 export const GET_ME = gql`
   query getMe {
@@ -9,11 +9,25 @@ export const GET_ME = gql`
   }
 `
 
+export const GET_USERS = gql`
+  query searchUser($name: String!) {
+    users(name: $name) {
+      id
+      name
+    }
+  }
+`
+
 export interface User {
-    email: string;
-    name: string;
+  id?: string
+  email?: string
+  name?: string
 }
 
 export interface MeQuery {
-    me: User
+  me: User
+}
+
+export interface UsersQuery {
+  users: User[]
 }

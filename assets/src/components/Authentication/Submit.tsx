@@ -1,6 +1,8 @@
+import React from "react"
+
 interface SubmitProps {
   /** Button's inner text */
-  children?: React.ReactNode;
+  children?: React.ReactNode
 }
 
 /**
@@ -11,5 +13,5 @@ export default function Submit({ children }: SubmitProps) {
     <div>
       <button>{children}</button>
     </div>
-  );
+  )
 }

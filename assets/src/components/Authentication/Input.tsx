@@ -1,6 +1,8 @@
+import React from "react"
+
 interface InputProps {
   /** Input's label text */
-  children?: React.ReactNode;
+  children?: React.ReactNode
 }
 
 /**
@@ -17,5 +19,5 @@ export default function Input({ children }: InputProps) {
         </span>
       </div>
     </div>
-  );
+  )
 }

@@ -1,11 +1,12 @@
-import { GET_ME, MeQuery } from "$queries/user";
-import { useQuery } from "@apollo/client";
+import { GET_ME, MeQuery } from "$queries/user"
+import { useQuery } from "@apollo/client"
+import React from "react"
 
 export default function Hello() {
-  const { loading, error, data } = useQuery<MeQuery>(GET_ME);
-  if (loading || error || !data) return <></>;
+  const { loading, error, data } = useQuery<MeQuery>(GET_ME)
+  if (loading || error || !data) return <></>
 
-  const name = data.me.name || data.me.email;
+  const name = data.me.name || data.me.email
   return (
     <section className="section hero is-primary">
       <div className="hero-body">
@@ -13,5 +14,5 @@ export default function Hello() {
         <p className="subtitle">{name}</p>
       </div>
     </section>
-  );
+  )
 }

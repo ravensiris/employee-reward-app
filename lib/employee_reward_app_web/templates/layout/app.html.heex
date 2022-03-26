@@ -1,9 +1,5 @@
 <main class="container">
-  <div id="flash-info" style="display: none;">
-    <span id="message"><%= get_flash(@conn, :info) %></span>
-  </div>
-  <div id="flash-error" style="display: none;">
-    <span id="message"><%= get_flash(@conn, :error) %></span>
-  </div>
+  <div id="flash-info" style="display: none;"><span id="message"><%= get_flash(@conn, :info) %></span></div>
+  <div id="flash-error" style="display: none;"><span id="message"><%= get_flash(@conn, :error) %></span></div>
   <%= @inner_content %>
 </main>

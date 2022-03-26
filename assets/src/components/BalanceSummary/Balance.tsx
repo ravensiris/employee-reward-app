@@ -1,3 +1,5 @@
+import React from "react"
+
 export default function Balance() {
   return (
     <div className="tile is-parent is-vertical">
@@ -9,5 +11,5 @@ export default function Balance() {
         </div>
       </div>
     </div>
-  );
+  )
 }

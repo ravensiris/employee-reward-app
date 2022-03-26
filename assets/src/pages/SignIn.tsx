@@ -4,7 +4,8 @@ import {
   ErrorMessage,
   Input,
   Title,
-} from "$components/Authentication";
+} from "$components/Authentication"
+import React from "react"
 
 export default function SignIn() {
   return (
@@ -18,5 +19,5 @@ export default function SignIn() {
         <Buttons />
       </form>
     </>
-  );
+  )
 }
