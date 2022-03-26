@@ -2,19 +2,31 @@ import Autocomplete from "$components/Autocomplete"
 import AutocompleteItem from "$components/Autocomplete/AutocompleteItem"
 import type { User, UsersQuery } from "$queries/user"
 import { GET_USERS } from "$queries/user"
+import type { OperationVariables, QueryLazyOptions } from "@apollo/client"
 import { useLazyQuery } from "@apollo/client"
-import React, { useEffect, useState } from "react"
+import { debounce } from "debounce"
+import React, { useCallback, useEffect, useState } from "react"
 
 export interface Props {
   onSelected: (user?: User) => void
 }
 
 export default function AutocompleteUser({ onSelected }: Props) {
-  const [searchUser, { loading, data }] = useLazyQuery<UsersQuery>(GET_USERS)
+  const [searchUserBounce, { loading, data }] =
+    useLazyQuery<UsersQuery>(GET_USERS)
   const [showItems, setShowItems] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User>()
   const [inputValue, setInputValue] = useState("")
   const [hoverIndex, setHoverIndex] = useState(0)
+  const [searchDebouncing, setSearchDebouncing] = useState(false)
+
+  const searchUser = useCallback(
+    debounce((options?: QueryLazyOptions<OperationVariables>) => {
+      searchUserBounce(options)
+      setSearchDebouncing(false)
+    }, 1000),
+    []
+  )
 
   useEffect(() => {
     onSelected(selectedUser)
@@ -70,6 +82,11 @@ export default function AutocompleteUser({ onSelected }: Props) {
   const onChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     const inputValue = e.target.value
     setInputValue(inputValue)
+    if (!inputValue) {
+      setShowItems(false)
+      return
+    }
+    setSearchDebouncing(true)
     searchUser({ variables: { name: inputValue } })
     setShowItems(true)
     setHoverIndex(0)
@@ -79,7 +96,7 @@ export default function AutocompleteUser({ onSelected }: Props) {
     <>
       <Autocomplete
         onChange={onChange}
-        loading={loading}
+        loading={searchDebouncing || loading}
         active={showItems && !!data?.users.length}
         value={inputValue}
         onKeyDown={onKeyDown}
