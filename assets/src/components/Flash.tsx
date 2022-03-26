@@ -1,19 +1,19 @@
-import type { FlashState } from "$/cache";
-import { ReactiveVar } from "@apollo/client";
-import React, { useEffect, useRef } from "react";
+import type { FlashState } from "$/cache"
+import { ReactiveVar } from "@apollo/client"
+import React, { useEffect, useRef } from "react"
 
 interface FlashProps {
-  flashState: ReactiveVar<FlashState>;
+  flashState: ReactiveVar<FlashState>
 }
 
 export default function Flash({ flashState }: FlashProps) {
-  let messageElemRef = useRef<HTMLSpanElement>(null);
+  const messageElemRef = useRef<HTMLSpanElement>(null)
   useEffect(() => {
     if (messageElemRef.current && messageElemRef.current.innerText) {
-      const message = messageElemRef.current.innerText;
-      flashState({ message, consumed: false });
+      const message = messageElemRef.current.innerText
+      flashState({ message, consumed: false })
     }
-  }, []);
+  }, [])
   return (
     <>
       <span
@@ -22,5 +22,5 @@ export default function Flash({ flashState }: FlashProps) {
         dangerouslySetInnerHTML={{ __html: "" }}
       />
     </>
-  );
+  )
 }

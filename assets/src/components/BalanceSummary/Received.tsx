@@ -1,3 +1,5 @@
+import React from "react"
+
 export default function Received() {
   return (
     <div className="tile is-parent is-vertical">
@@ -9,5 +11,5 @@ export default function Received() {
         </div>
       </div>
     </div>
-  );
+  )
 }

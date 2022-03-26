@@ -1,3 +1,5 @@
+import React from "react"
+
 export default function Sent() {
   return (
     <div className="tile is-parent is-vertical">
@@ -9,5 +11,5 @@ export default function Sent() {
         </div>
       </div>
     </div>
-  );
+  )
 }
