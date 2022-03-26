@@ -60,7 +60,7 @@ defmodule EmployeeRewardApp.MixProject do
       {:absinthe_plug, "~> 1.5"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
-      {:ex_machina, "~> 2.7"},
+      {:ex_machina, "~> 2.7", only: [:dev, :test]},
       {:faker, "~> 0.16", only: [:dev, :test]}
     ]
   end
