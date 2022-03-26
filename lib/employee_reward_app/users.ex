@@ -8,32 +8,25 @@ defmodule EmployeeRewardApp.Users do
   @doc """
   Fuzzy search for a User.
 
-  `term` is User's name, User's id or both
+  `term` is User's name.
 
   Returns a list of matching Users
   """
   def search_users(term) do
-    start_character = String.slice(term, 0..1)
+    name = term
+
+    data_query =
+      from u in User,
+        select: %{
+          id: u.id,
+          name: u.name,
+          email: u.email,
+          name_clipped: fragment("SUBSTR(?, 0, LENGTH(?) + 1)", u.name, ^name)
+        }
 
     from(
-      u in User,
-      # 2x where since term can start with either id or name
-      where: ilike(u.name, ^"#{start_character}%"),
-      or_where: ilike(type(u.id, :string), ^"#{start_character}%"),
-      # 2x where since term can start with either id or name
-      where:
-        fragment(
-          "SIMILARITY(?, ?) > 0",
-          u.name,
-          ^term
-        ),
-      or_where:
-        fragment(
-          "SIMILARITY(?, ?) > 0",
-          type(u.id, :string),
-          ^term
-        ),
-      order_by: fragment("LEVENSHTEIN(CONCAT(?, ?), ?) DESC", u.name, u.id, ^term),
+      u in subquery(data_query),
+      order_by: fragment("LEVENSHTEIN(?, ?)", u.name_clipped, ^name),
       limit: 5
     )
     |> Repo.all()
