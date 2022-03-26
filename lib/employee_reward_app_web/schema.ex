@@ -5,7 +5,7 @@ defmodule EmployeeRewardAppWeb.Schema do
   alias EmployeeRewardAppWeb.Middleware
   alias EmployeeRewardApp.Resolvers
 
-  import_types(Schema.Types.User)
+  import_types(Schema.Types.UserType)
 
   query do
     @desc "Get current user"

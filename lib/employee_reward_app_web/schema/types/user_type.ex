@@ -1,4 +1,4 @@
-defmodule EmployeeRewardAppWeb.Schema.Types.User do
+defmodule EmployeeRewardAppWeb.Schema.Types.UserType do
   @moduledoc """
   User object definition for Absinthe
   """
