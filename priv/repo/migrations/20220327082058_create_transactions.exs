@@ -6,13 +6,13 @@ defmodule EmployeeRewardApp.Repo.Migrations.CreateTransactions do
       add :id, :binary_id, primary_key: true
       add :status, :string
       add :amount, :integer
-      add :from_user, references(:users, on_delete: :nothing, type: :binary_id)
-      add :to_user, references(:users, on_delete: :nothing, type: :binary_id)
+      add :from_user_id, references(:users, on_delete: :nothing, type: :binary_id)
+      add :to_user_id, references(:users, on_delete: :nothing, type: :binary_id)
 
       timestamps()
     end
 
-    create index(:transactions, [:from_user])
-    create index(:transactions, [:to_user])
+    create index(:transactions, [:from_user_id])
+    create index(:transactions, [:to_user_id])
   end
 end

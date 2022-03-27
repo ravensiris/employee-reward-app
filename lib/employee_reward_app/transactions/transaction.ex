@@ -1,6 +1,7 @@
 defmodule EmployeeRewardApp.Transactions.Transaction do
   use Ecto.Schema
   import Ecto.Changeset
+  alias EmployeeRewardApp.Users.User
 
   @type status() :: :active | :cancelled
 
@@ -8,8 +9,10 @@ defmodule EmployeeRewardApp.Transactions.Transaction do
           id: Ecto.UUID.t() | nil,
           amount: integer() | nil,
           status: status() | nil,
-          from_user: Ecto.UUID.t() | nil,
-          to_user: Ecto.UUID.t() | nil,
+          from_user_id: Ecto.UUID.t() | nil,
+          to_user_id: Ecto.UUID.t() | nil,
+          from_user: User.t() | nil,
+          to_user: User.t() | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -18,8 +21,14 @@ defmodule EmployeeRewardApp.Transactions.Transaction do
   schema "transactions" do
     field :amount, :integer
     field :status, Ecto.Enum, values: [:active, :cancelled]
-    field :from_user, :binary_id
-    field :to_user, :binary_id
+
+    belongs_to :from_user, EmployeeRewardApp.Users.User,
+      foreign_key: :from_user_id,
+      references: :id
+
+    belongs_to :to_user, EmployeeRewardApp.Users.User,
+      foreign_key: :to_user_id,
+      references: :id
 
     timestamps()
   end
