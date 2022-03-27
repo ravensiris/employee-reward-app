@@ -61,7 +61,8 @@ defmodule EmployeeRewardApp.MixProject do
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
       {:ex_machina, "~> 2.7", only: [:dev, :test]},
-      {:faker, "~> 0.16", only: [:dev, :test]}
+      {:faker, "~> 0.16", only: [:dev, :test]},
+      {:timex, "~> 3.7"}
     ]
   end
 
