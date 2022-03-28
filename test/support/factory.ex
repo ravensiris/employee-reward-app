@@ -28,7 +28,6 @@ defmodule EmployeeRewardApp.Factory do
       amount: Enum.random(1..50),
       from_user: build(:user),
       to_user: build(:user),
-      status: sequence(:status, [:active, :cancelled]),
       inserted_at: inserted_at,
       updated_at: inserted_at
     }
