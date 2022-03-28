@@ -1,7 +1,12 @@
-SELECT transactions.from_user_id AS user_id,
-    sum(transactions.amount) AS sent,
-	EXTRACT(YEAR from inserted_at) as year,
-	EXTRACT(MONTH from inserted_at) as month,
-	status
-   FROM transactions
-  GROUP BY transactions.from_user_id, year, month, status;
+SELECT FROM_USER_ID AS USER_ID,
+	SUM(AMOUNT) AS SENT,
+	EXTRACT(YEAR
+									FROM INSERTED_AT) AS YEAR,
+	EXTRACT(MONTH
+									FROM INSERTED_AT) AS MONTH,
+	STATUS
+FROM TRANSACTIONS
+GROUP BY FROM_USER_ID,
+	YEAR,
+	MONTH,
+	STATUS;
