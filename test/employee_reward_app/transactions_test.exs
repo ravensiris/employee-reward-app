@@ -17,6 +17,11 @@ defmodule EmployeeRewardApp.TransactionsTest do
     assert Transactions.get_transaction!(transaction.id) == transaction
   end
 
+  test "get_balance!/1 returns 50 for a new user" do
+    user = insert(:user)
+    assert Transactions.get_balance!(user.id) == nil
+  end
+
   describe "create_transaction/1" do
     test "valid data creates a transaction" do
       u1 = insert(:user)
