@@ -84,5 +84,17 @@ defmodule EmployeeRewardApp.TransactionsTest do
               [constraint: :check, constraint_name: "insufficient_funds"]} =
                changeset.errors[:transactions_table]
     end
+
+    test "transaction fails when there is no user provided" do
+      invalid_attrs = %{amount: 50}
+      should_fail = Transactions.create_transaction(invalid_attrs)
+      assert {:error, _} = Transactions.create_transaction(invalid_attrs)
+
+      {:error, changeset} = Transactions.create_transaction(invalid_attrs)
+
+      assert {"transaction has to have a user attached",
+              [constraint: :check, constraint_name: "has_user_attached"]} =
+               changeset.errors[:transactions_table]
+    end
   end
 end
