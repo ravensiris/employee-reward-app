@@ -7,6 +7,7 @@ defmodule EmployeeRewardApp.Transactions do
   alias EmployeeRewardApp.Repo
 
   alias EmployeeRewardApp.Transactions.Transaction
+  alias EmployeeRewardApp.Transactions.Balance
 
   @doc """
   Returns the list of transactions.
@@ -36,6 +37,8 @@ defmodule EmployeeRewardApp.Transactions do
 
   """
   def get_transaction!(id), do: Repo.get!(Transaction, id)
+
+  def get_balance!(user_id), do: Repo.get!(Balance, user_id)
 
   @doc """
   Creates a transaction.
