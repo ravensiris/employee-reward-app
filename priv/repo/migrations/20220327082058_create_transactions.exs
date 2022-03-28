@@ -13,5 +13,9 @@ defmodule EmployeeRewardApp.Repo.Migrations.CreateTransactions do
 
     create index(:transactions, [:from_user_id])
     create index(:transactions, [:to_user_id])
+
+    create constraint(:transactions, :has_user_attached,
+             check: "(from_user_id IS NOT NULL) OR (to_user_id IS NOT NULL)"
+           )
   end
 end
