@@ -38,11 +38,13 @@ defmodule EmployeeRewardApp.UsersTest do
     end
 
     test "find specific john", %{john: john, john_clipped_id: john_clipped_id} do
-      assert Users.search_users("john@#{john_clipped_id}") == [john]
+      first = Users.search_users("john@#{john_clipped_id}") |> List.first()
+      assert first == john
     end
 
     test "find specific john by id prefix", %{john: john, john_clipped_id: john_clipped_id} do
-      assert Users.search_users("@#{john_clipped_id}") == [john]
+      first = Users.search_users("@#{john_clipped_id}") |> List.first()
+      assert first == john
     end
 
     test "find johns with fuzzy matching" do

@@ -81,10 +81,8 @@ defmodule EmployeeRewardAppWeb.APIUserTest do
         |> String.split("-")
         |> List.first()
 
-      result = query_users(conn, "@#{jane_clipped_id}")
-      expected = %{"data" => %{"users" => [jane]}}
-
-      assert result == expected
+      %{"data" => %{"users" => users}} = query_users(conn, "@#{jane_clipped_id}")
+      assert List.first(users) == jane
     end
   end
 
@@ -105,10 +103,8 @@ defmodule EmployeeRewardAppWeb.APIUserTest do
         |> String.split("-")
         |> List.first()
 
-      result = query_users(conn, "@#{jane_clipped_id}")
-      expected = %{"data" => %{"users" => [jane]}}
-
-      assert result == expected
+      %{"data" => %{"users" => users}} = query_users(conn, "@#{jane_clipped_id}")
+      assert List.first(users) == jane
     end
   end
 end
