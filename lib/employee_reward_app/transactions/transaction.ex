@@ -34,10 +34,19 @@ defmodule EmployeeRewardApp.Transactions.Transaction do
     transaction
     |> cast(attrs, [:amount, :from_user_id, :to_user_id])
     |> validate_required([:amount])
+    # Constraint in: /20220327082058_create_transactions.exs
     |> check_constraint(
       :transactions_table,
       name: :has_user_attached,
       message: "transaction has to have a user attached"
+    )
+    # Voodo magic
+    # https://stackoverflow.com/questions/53122256/how-to-raise-custom-postgresql-error-and-handle-it-in-ecto
+    # Check Jakub Lambrych's answer
+    # Constraint/trigger in: 20220328225159_add_transaction_new_balance_check_trigger.exs
+    |> check_constraint(:transactions_table,
+      name: :insufficient_funds,
+      message: "user doesn't have sufficient funds for transaction"
     )
   end
 end
