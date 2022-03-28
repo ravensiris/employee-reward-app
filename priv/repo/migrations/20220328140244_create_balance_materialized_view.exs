@@ -13,8 +13,7 @@ defmodule EmployeeRewardApp.Repo.Migrations.CreateBalanceMaterializedView do
         EXTRACT(YEAR FROM INSERTED_AT) = EXTRACT(YEAR FROM NOW())
         AND
         EXTRACT(MONTH FROM INSERTED_AT) = EXTRACT(MONTH FROM NOW())
-        ),
-        RECEIVED AS
+        ),			RECEIVED AS
         (SELECT TO_USER_ID AS USER_ID,
             SUM(AMOUNT) AS RECEIVED
           FROM CURRENT_ACTIVE_TRANSACTIONS
@@ -32,11 +31,11 @@ defmodule EmployeeRewardApp.Repo.Migrations.CreateBalanceMaterializedView do
               0) SENT
           FROM RECEIVED R
           FULL OUTER JOIN SENT S ON R.USER_ID = S.USER_ID)
-      SELECT USER_ID,
-        RECEIVED,
-        SENT,
-        50 - SENT + RECEIVED AS BALANCE
-      FROM PRE_BALANCE;
+      SELECT coalesce(USER_ID, u.id) user_id,
+        coalesce(RECEIVED, 0) RECEIVED,
+        coalesce(SENT, 0) SENT,
+        50 - coalesce(SENT, 0) + coalesce(RECEIVED,0) AS BALANCE
+      FROM PRE_BALANCE pb full outer join users u on u.id = pb.user_id;
     """
 
     execute """
@@ -52,6 +51,14 @@ defmodule EmployeeRewardApp.Repo.Migrations.CreateBalanceMaterializedView do
     CREATE TRIGGER transactions_refresh_balance_trg
     AFTER INSERT OR UPDATE OR DELETE
     ON transactions
+    FOR EACH STATEMENT
+    EXECUTE PROCEDURE transactions_refresh_balance();
+    """
+
+    execute """
+    CREATE TRIGGER users_change_balance_trg
+    AFTER INSERT OR UPDATE OR DELETE
+    ON users
     FOR EACH STATEMENT
     EXECUTE PROCEDURE transactions_refresh_balance();
     """

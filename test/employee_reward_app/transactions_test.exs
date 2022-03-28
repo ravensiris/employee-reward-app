@@ -19,7 +19,11 @@ defmodule EmployeeRewardApp.TransactionsTest do
 
   test "get_balance!/1 returns 50 for a new user" do
     user = insert(:user)
-    assert Transactions.get_balance!(user.id) == nil
+    balance = Transactions.get_balance!(user.id)
+    assert balance.balance == 50
+    assert balance.sent == 0
+    assert balance.received == 0
+    assert balance.user_id == user.id
   end
 
   describe "create_transaction/1" do
