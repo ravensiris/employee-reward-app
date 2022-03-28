@@ -32,7 +32,12 @@ defmodule EmployeeRewardApp.Transactions.Transaction do
   @doc false
   def changeset(transaction, attrs) do
     transaction
-    |> cast(attrs, [:amount])
+    |> cast(attrs, [:amount, :from_user_id, :to_user_id])
     |> validate_required([:amount])
+    |> check_constraint(
+      :transactions_table,
+      name: :has_user_attached,
+      message: "transaction has to have a user attached"
+    )
   end
 end
