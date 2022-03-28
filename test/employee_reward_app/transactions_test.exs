@@ -72,8 +72,17 @@ defmodule EmployeeRewardApp.TransactionsTest do
       u1 = insert(:user)
       u2 = insert(:user)
       empty_pockets_attrs = %{amount: 50, from_user_id: u1.id, to_user_id: u2.id}
+
       t1 = Transactions.create_transaction(empty_pockets_attrs)
-      assert {:error, _} = Transactions.create_transaction(empty_pockets_attrs)
+      assert {:ok, _} = t1
+
+      should_fail = Transactions.create_transaction(empty_pockets_attrs)
+      assert {:error, _} = should_fail
+      {:error, changeset} = should_fail
+
+      assert {"user doesn't have sufficient funds for transaction",
+              [constraint: :check, constraint_name: "insufficient_funds"]} =
+               changeset.errors[:transactions_table]
     end
   end
 end
