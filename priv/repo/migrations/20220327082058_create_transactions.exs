@@ -4,7 +4,6 @@ defmodule EmployeeRewardApp.Repo.Migrations.CreateTransactions do
   def change do
     create table(:transactions, primary_key: false) do
       add :id, :binary_id, primary_key: true
-      add :status, :string
       add :amount, :integer
       add :from_user_id, references(:users, on_delete: :nothing, type: :binary_id)
       add :to_user_id, references(:users, on_delete: :nothing, type: :binary_id)

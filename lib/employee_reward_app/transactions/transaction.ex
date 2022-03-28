@@ -3,12 +3,9 @@ defmodule EmployeeRewardApp.Transactions.Transaction do
   import Ecto.Changeset
   alias EmployeeRewardApp.Users.User
 
-  @type status() :: :active | :cancelled
-
   @type t :: %__MODULE__{
           id: Ecto.UUID.t() | nil,
           amount: integer() | nil,
-          status: status() | nil,
           from_user_id: Ecto.UUID.t() | nil,
           to_user_id: Ecto.UUID.t() | nil,
           from_user: User.t() | nil,
@@ -20,7 +17,6 @@ defmodule EmployeeRewardApp.Transactions.Transaction do
   @foreign_key_type :binary_id
   schema "transactions" do
     field :amount, :integer
-    field :status, Ecto.Enum, values: [:active, :cancelled]
 
     belongs_to :from_user, EmployeeRewardApp.Users.User,
       foreign_key: :from_user_id,
@@ -36,7 +32,7 @@ defmodule EmployeeRewardApp.Transactions.Transaction do
   @doc false
   def changeset(transaction, attrs) do
     transaction
-    |> cast(attrs, [:status, :amount])
-    |> validate_required([:status, :amount])
+    |> cast(attrs, [:amount])
+    |> validate_required([:amount])
   end
 end
