@@ -17,13 +17,37 @@ defmodule EmployeeRewardApp.TransactionsTest do
     assert Transactions.get_transaction!(transaction.id) == transaction
   end
 
-  test "get_balance!/1 returns 50 for a new user" do
-    user = insert(:user)
-    balance = Transactions.get_balance!(user.id)
-    assert balance.balance == 50
-    assert balance.sent == 0
-    assert balance.received == 0
-    assert balance.user_id == user.id
+  describe "get_balance!/1" do
+    test "returns 50 for a new user" do
+      user = insert(:user)
+      balance = Transactions.get_balance!(user.id)
+      assert balance.balance == 50
+      assert balance.sent == 0
+      assert balance.received == 0
+      assert balance.user_id == user.id
+    end
+
+    test "returns balance - sent after sending transaction" do
+      user = insert(:user)
+      transaction = insert(:transaction, %{from_user: user})
+      balance = Transactions.get_balance!(user.id)
+      assert balance.balance == 50 - transaction.amount
+    end
+
+    test "returns balance + received after getting transaction" do
+      user = insert(:user)
+      transaction = insert(:transaction, %{to_user: user})
+      balance = Transactions.get_balance!(user.id)
+      assert balance.balance == 50 + transaction.amount
+    end
+
+    test "returns balance + received - sent after two way transaction" do
+      user = insert(:user)
+      t1 = insert(:transaction, %{from_user: user, amount: 10})
+      t2 = insert(:transaction, %{to_user: user, amount: 20})
+      balance = Transactions.get_balance!(user.id)
+      assert balance.balance == 50 - t1.amount + t2.amount
+    end
   end
 
   describe "create_transaction/1" do
