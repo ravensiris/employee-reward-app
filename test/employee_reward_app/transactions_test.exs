@@ -1,61 +1,38 @@
 defmodule EmployeeRewardApp.TransactionsTest do
   use EmployeeRewardApp.DataCase
 
+  import EmployeeRewardApp.Factory
+
+  alias EmployeeRewardApp.Repo
   alias EmployeeRewardApp.Transactions
+  alias EmployeeRewardApp.Transactions.Transaction
 
-  describe "transactions" do
-    alias EmployeeRewardApp.Transactions.Transaction
+  test "list_transactions/0 returns all transactions" do
+    transaction = insert(:transaction) |> Repo.forget_all()
+    assert Transactions.list_transactions() == [transaction]
+  end
 
-    import EmployeeRewardApp.TransactionsFixtures
+  test "get_transaction!/1 returns the transaction with given id" do
+    transaction = insert(:transaction) |> Repo.forget_all()
+    assert Transactions.get_transaction!(transaction.id) == transaction
+  end
 
-    @invalid_attrs %{amount: nil, status: nil}
+  describe "create_transaction/1" do
+    test "valid data creates a transaction" do
+      u1 = insert(:user)
+      u2 = insert(:user)
 
-    test "list_transactions/0 returns all transactions" do
-      transaction = transaction_fixture()
-      assert Transactions.list_transactions() == [transaction]
-    end
-
-    test "get_transaction!/1 returns the transaction with given id" do
-      transaction = transaction_fixture()
-      assert Transactions.get_transaction!(transaction.id) == transaction
-    end
-
-    test "create_transaction/1 with valid data creates a transaction" do
-      valid_attrs = %{amount: 42, status: :active}
+      valid_attrs = %{
+        amount: 42,
+        to_user_id: u1.id,
+        from_user_id: u2.id
+      }
 
       assert {:ok, %Transaction{} = transaction} = Transactions.create_transaction(valid_attrs)
+
       assert transaction.amount == 42
-      assert transaction.status == :active
-    end
-
-    test "create_transaction/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Transactions.create_transaction(@invalid_attrs)
-    end
-
-    test "update_transaction/2 with valid data updates the transaction" do
-      transaction = transaction_fixture()
-      update_attrs = %{amount: 43, status: :cancelled}
-
-      assert {:ok, %Transaction{} = transaction} = Transactions.update_transaction(transaction, update_attrs)
-      assert transaction.amount == 43
-      assert transaction.status == :cancelled
-    end
-
-    test "update_transaction/2 with invalid data returns error changeset" do
-      transaction = transaction_fixture()
-      assert {:error, %Ecto.Changeset{}} = Transactions.update_transaction(transaction, @invalid_attrs)
-      assert transaction == Transactions.get_transaction!(transaction.id)
-    end
-
-    test "delete_transaction/1 deletes the transaction" do
-      transaction = transaction_fixture()
-      assert {:ok, %Transaction{}} = Transactions.delete_transaction(transaction)
-      assert_raise Ecto.NoResultsError, fn -> Transactions.get_transaction!(transaction.id) end
-    end
-
-    test "change_transaction/1 returns a transaction changeset" do
-      transaction = transaction_fixture()
-      assert %Ecto.Changeset{} = Transactions.change_transaction(transaction)
+      assert transaction.to_user_id == u1.id
+      assert transaction.from_user_id == u2.id
     end
   end
 end
