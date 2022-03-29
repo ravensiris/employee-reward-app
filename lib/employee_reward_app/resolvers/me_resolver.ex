@@ -1,12 +1,24 @@
 defmodule EmployeeRewardApp.Resolvers.MeResolver do
-  alias EmployeeRewardApp.Users.User
+  alias EmployeeRewardApp.Transactions
+
+  defp get_fields(info) do
+    project = Absinthe.Resolution.project(info)
+    Enum.map(project, &Map.get(&1, :name))
+  end
 
   @moduledoc """
   This module defines resolvers relating to the current user
   """
-  @spec show_me(any, any, %{:context => %{current_user: User.t()}}) ::
-          {:error, String.t()} | {:ok, map}
-  def show_me(_parent, _args, %{context: %{current_user: current_user}}) do
-    {:ok, Map.take(current_user, [:id, :email, :role, :name])}
+  def show_me(_parent, _args, %{context: %{current_user: current_user}} = info) do
+    result = Map.take(current_user, [:id, :email, :role, :name])
+    fields = get_fields(info)
+
+    result =
+      if "balance" in fields do
+        balance = Transactions.get_balance!(current_user.id)
+        Map.put(result, :balance, balance)
+      end
+
+    {:ok, result}
   end
 end

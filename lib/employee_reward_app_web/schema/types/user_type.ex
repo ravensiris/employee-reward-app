@@ -6,11 +6,14 @@ defmodule EmployeeRewardAppWeb.Schema.Types.UserType do
   alias EmployeeRewardAppWeb.Schema
 
   import_types(Schema.Types.UUID4)
+  import_types(Schema.Types.BalanceType)
 
   object :user do
     field :id, :uuid4
     field :email, :string
     field :name, :string
     field :role, :string
+
+    field :balance, :balance
   end
 end
