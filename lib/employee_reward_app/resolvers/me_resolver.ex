@@ -17,6 +17,8 @@ defmodule EmployeeRewardApp.Resolvers.MeResolver do
       if "balance" in fields do
         balance = Transactions.get_balance!(current_user.id)
         Map.put(result, :balance, balance)
+      else
+        result
       end
 
     {:ok, result}
