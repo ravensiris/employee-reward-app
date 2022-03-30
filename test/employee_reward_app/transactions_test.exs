@@ -7,6 +7,10 @@ defmodule EmployeeRewardApp.TransactionsTest do
   alias EmployeeRewardApp.Transactions
   alias EmployeeRewardApp.Transactions.Transaction
 
+  defp remove_pass(user) do
+    Map.replace!(user, :password, nil)
+  end
+
   test "list_transactions/0 returns all transactions" do
     transaction = insert(:transaction) |> Repo.forget_all()
     assert Transactions.list_transactions() == [transaction]
@@ -95,6 +99,17 @@ defmodule EmployeeRewardApp.TransactionsTest do
       assert {"transaction has to have a user attached",
               [constraint: :check, constraint_name: "has_user_attached"]} =
                changeset.errors[:transactions_table]
+    end
+
+    test "transaction preloads users" do
+      u1 = insert(:user) |> remove_pass()
+      u2 = insert(:user) |> remove_pass()
+
+      {:ok, t1} =
+        Transactions.create_transaction(%{from_user_id: u1.id, to_user_id: u2.id, amount: 10})
+
+      assert t1.from_user == u1
+      assert t1.to_user == u2
     end
   end
 end

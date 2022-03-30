@@ -53,8 +53,15 @@ defmodule EmployeeRewardApp.Transactions do
 
   """
   def create_transaction(attrs \\ %{}) do
-    %Transaction{}
-    |> Transaction.changeset(attrs)
-    |> Repo.insert()
+    transaction =
+      %Transaction{}
+      |> Transaction.changeset(attrs)
+      |> Repo.insert()
+
+    with {:ok, transaction} <- transaction do
+      {:ok, Repo.preload(transaction, [:from_user, :to_user])}
+    else
+      default -> default
+    end
   end
 end
