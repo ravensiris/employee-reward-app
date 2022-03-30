@@ -32,4 +32,17 @@ defmodule EmployeeRewardAppWeb.Schema do
       resolve(&Resolvers.UserResolver.search_user/3)
     end
   end
+
+  mutation do
+    # TODO: Tests
+    # BUG: Leaks emails and possibly other info to non admin users
+    @desc "Send credits to another user"
+    field :send_credits, type: :transaction do
+      middleware(Middleware.Authentication)
+      arg(:amount, non_null(:integer))
+      arg(:to, non_null(:uuid4))
+
+      resolve(&Resolvers.TransactionResolver.send_credits/3)
+    end
+  end
 end
