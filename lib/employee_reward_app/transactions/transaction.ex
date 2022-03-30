@@ -34,6 +34,7 @@ defmodule EmployeeRewardApp.Transactions.Transaction do
     transaction
     |> cast(attrs, [:amount, :from_user_id, :to_user_id])
     |> validate_required([:amount])
+    |> validate_number(:amount, greater_than: 0)
     ####
     # constraints BELOW in: priv/repo/migrations/20220330083958_add_transaction_constraints.exs
     ####
