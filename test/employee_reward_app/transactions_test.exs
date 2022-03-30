@@ -113,9 +113,20 @@ defmodule EmployeeRewardApp.TransactionsTest do
     end
 
     test "transaction cannot from and to the same user" do
-      u1 = insert(:user) |> remove_pass()
+      u1 = insert(:user)
       t1 = Transactions.create_transaction(%{amount: 10, from_user_id: u1.id, to_user_id: u1.id})
       assert {:error, _} = t1
+    end
+
+    test "transaction amount cannot be less or equal zero" do
+      u1 = insert(:user)
+      u2 = insert(:user)
+
+      t1 = Transactions.create_transaction(%{amount: 0, from_user_id: u1.id, to_user_id: u2.id})
+      assert {:error, _} = t1
+
+      t2 = Transactions.create_transaction(%{amount: -10, from_user_id: u1.id, to_user_id: u2.id})
+      assert {:error, _} = t2
     end
   end
 end
