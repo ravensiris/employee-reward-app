@@ -20,18 +20,18 @@ defmodule EmployeeRewardApp.Repo.Migrations.AddTransactionConstraints do
       FOR EACH ROW
       EXECUTE PROCEDURE transaction_balance_check();
     """
-  end
 
-  def down do
-    execute "DROP FUNCTION transaction_balance_check;"
-    execute "DROP TRIGGER transaction_balance_check_trg;"
-  end
-
-  def change do
     create constraint(:transactions, :has_user_attached,
              check: "(from_user_id IS NOT NULL) OR (to_user_id IS NOT NULL)"
            )
 
     create constraint(:transactions, :transaction_to_self, check: "from_user_id != to_user_id")
+  end
+
+  def down do
+    drop :has_user_attached
+    drop :transaction_to_self
+    execute "DROP FUNCTION transaction_balance_check;"
+    execute "DROP TRIGGER transaction_balance_check_trg;"
   end
 end
