@@ -3,10 +3,6 @@ defmodule EmployeeRewardAppWeb.Schema.Types.UserType do
   `User` definition for Absinthe
   """
   use Absinthe.Schema.Notation
-  alias EmployeeRewardAppWeb.Schema
-
-  import_types(Schema.Types.UUID4)
-  import_types(Schema.Types.BalanceType)
 
   object :user do
     field :id, :uuid4

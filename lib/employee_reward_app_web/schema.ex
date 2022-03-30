@@ -5,6 +5,8 @@ defmodule EmployeeRewardAppWeb.Schema do
   alias EmployeeRewardAppWeb.Middleware
   alias EmployeeRewardApp.Resolvers
 
+  import_types(Schema.Types.UUID4)
+  import_types(Schema.Types.BalanceType)
   import_types(Schema.Types.UserType)
 
   query do
