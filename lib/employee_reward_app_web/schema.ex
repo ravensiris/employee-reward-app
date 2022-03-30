@@ -8,12 +8,21 @@ defmodule EmployeeRewardAppWeb.Schema do
   import_types(Schema.Types.UUID4)
   import_types(Schema.Types.BalanceType)
   import_types(Schema.Types.UserType)
+  import_types(Schema.Types.TransactionType)
 
   query do
     @desc "Get current user"
     field :me, :user do
       middleware(Middleware.Authentication)
       resolve(&Resolvers.MeResolver.show_me/3)
+    end
+
+    # TODO: Tests
+    # TODO: Desc
+    # BUG: Leaks emails and possibly other info to non admin users
+    field :transactions, list_of(:transaction) do
+      middleware(Middleware.Authentication)
+      resolve(&Resolvers.TransactionResolver.get_recent/3)
     end
 
     @desc "Find user by name with fuzzy search"
