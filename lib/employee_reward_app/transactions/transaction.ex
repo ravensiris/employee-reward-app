@@ -34,7 +34,7 @@ defmodule EmployeeRewardApp.Transactions.Transaction do
     transaction
     |> cast(attrs, [:amount, :from_user_id, :to_user_id])
     |> validate_required([:amount])
-    # Constraint in: /20220327082058_create_transactions.exs
+    # Constraint in: 20220327082058_create_transactions.exs
     |> check_constraint(
       :transactions_table,
       name: :has_user_attached,
@@ -47,6 +47,10 @@ defmodule EmployeeRewardApp.Transactions.Transaction do
     |> check_constraint(:transactions_table,
       name: :insufficient_funds,
       message: "user doesn't have sufficient funds for transaction"
+    )
+    |> check_constraint(:transactions_table,
+      name: :transaction_to_self,
+      message: "transaction cannot be from and to the same user"
     )
   end
 end
