@@ -1,6 +1,7 @@
 defmodule EmployeeRewardApp.Resolvers.TransactionResolver do
   alias EmployeeRewardApp.Transactions
   alias EmployeeRewardApp.Utils.Sensitive
+  alias EmployeeRewardApp.Users.User
 
   @moduledoc """
   This module defines resolvers relating to `Transactions`
@@ -24,12 +25,9 @@ defmodule EmployeeRewardApp.Resolvers.TransactionResolver do
     end
   end
 
-  # TODO: Spec
-  def get_recent(_parent, _args, %{context: %{current_user: current_user}}) do
-    transactions =
-      Transactions.get_recent_transactions(current_user.id)
-      |> Sensitive.omit(current_user)
-
-    {:ok, transactions}
+  @spec get_recent(any, any, any) :: {:ok, list(Transactions.Transaction.t())} | {:error, any()}
+  def get_recent(_parent, _args, %{context: %{current_user: %User{} = current_user}}) do
+    Transactions.get_recent_transactions(current_user.id)
+    |> Sensitive.omit(current_user)
   end
 end

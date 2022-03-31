@@ -5,7 +5,8 @@ defmodule EmployeeRewardApp.Utils.Sensitive do
   alias EmployeeRewardApp.Users.User
   alias EmployeeRewardApp.Transactions.Transaction
 
-  @type omitable() :: User.t() | Transaction.t()
+  @type omitable_structs() :: User.t() | Transaction.t()
+  @type omitable() :: omitable_structs() | list(omitable_structs())
 
   @doc """
   Removes sensitive fields from supported structs depending on the user access level.
@@ -21,12 +22,11 @@ defmodule EmployeeRewardApp.Utils.Sensitive do
         iex> omit(%EmployeeRewardApp.Users.User{email: "user@example.org"}, %User{role: :admin})
         %EmployeeRewardApp.Users.User{email: "user@example.org"}
   """
-  @spec omit(omitable()) :: omitable()
+  @spec omit(omitable()) :: omitable_structs()
   def omit(any) do
     omit(any, %User{})
   end
 
-  @spec omit(omitable(), User.t()) :: omitable()
   def omit(any, %User{role: :admin}) do
     any
   end

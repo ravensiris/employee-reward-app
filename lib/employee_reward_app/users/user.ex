@@ -10,7 +10,7 @@ defmodule EmployeeRewardApp.Users.User do
   @type role() :: :member | :admin
 
   @type t :: %__MODULE__{
-          id: Ecto.UUID.t() | nil,
+          id: Ecto.UUID.t(),
           email: String.t() | nil,
           role: role() | nil,
           name: String.t() | nil
