@@ -26,7 +26,10 @@ defmodule EmployeeRewardApp.Resolvers.TransactionResolver do
 
   @spec get_recent(any, any, any) :: {:ok, list(Transactions.Transaction.t())} | {:error, any()}
   def get_recent(_parent, _args, %{context: %{current_user: %User{} = current_user}}) do
-    Transactions.get_recent_transactions(current_user.id)
-    |> Sensitive.omit(current_user)
+    transactions =
+      Transactions.get_recent_transactions(current_user.id)
+      |> Sensitive.omit(current_user)
+
+    {:ok, transactions}
   end
 end
