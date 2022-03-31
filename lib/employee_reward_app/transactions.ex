@@ -38,8 +38,17 @@ defmodule EmployeeRewardApp.Transactions do
   """
   def get_transaction!(id), do: Repo.get!(Transaction, id)
 
-  # TODO: Add doc
-  # TODO: Add spec
+  @doc """
+  Gets user's balance.
+
+  Raises `Ecto.NoResultsError` if the Transaction does not exist.
+
+  ## Examples
+
+      iex> get_balance!("1a20e3de-c7b1-43ed-b85d-ba9d3e56aac4")
+      %Balance{}
+  """
+  @spec get_balance!(Ecto.UUID.t() | String.t()) :: Balance.t()
   def get_balance!(user_id), do: Repo.get!(Balance, user_id)
 
   # TODO: Add better doc
@@ -62,14 +71,13 @@ defmodule EmployeeRewardApp.Transactions do
       |> Transaction.changeset(attrs)
       |> Repo.insert()
 
-    with {:ok, transaction} <- transaction do
-      {:ok, Repo.preload(transaction, [:from_user, :to_user])}
-    else
+    case transaction do
+      {:ok, transaction} -> {:ok, Repo.preload(transaction, [:from_user, :to_user])}
       default -> default
     end
   end
 
-  defp with_direction(query \\ Transaction, user_id, direction) do
+  defp with_direction(query, user_id, direction) do
     query
     |> or_where([t], field(t, ^:"#{direction}_user_id") == ^user_id)
   end
@@ -78,7 +86,11 @@ defmodule EmployeeRewardApp.Transactions do
   @type direction() :: :from | :to
 
   # TODO: Write tests
-  # TODO: Add doc
+  @doc """
+  Gets the most recent 10 transactions performed by/with `User` with `id` `user_id`
+
+  Use the two arity version with `direction` to select in whichever direction of transactions you want listed.
+  """
   @spec get_recent_transactions(user_id()) :: [Transaction.t()]
   def get_recent_transactions(user_id) do
     get_recent_transactions(user_id, [:from, :to])

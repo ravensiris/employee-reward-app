@@ -18,9 +18,8 @@ defmodule EmployeeRewardApp.Resolvers.TransactionResolver do
         from_user_id: current_user.id
       })
 
-    with {:ok, transaction} <- transaction do
-      {:ok, Sensitive.omit(transaction, current_user)}
-    else
+    case transaction do
+      {:ok, transaction} -> {:ok, Sensitive.omit(transaction, current_user)}
       {:error, _} -> {:error, "unable to send credits"}
     end
   end

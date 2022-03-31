@@ -3,6 +3,10 @@ defmodule EmployeeRewardApp.Transactions.Transaction do
   import Ecto.Changeset
   alias EmployeeRewardApp.Users.User
 
+  @moduledoc """
+  Represents a transfer of credits
+  """
+
   @type t :: %__MODULE__{
           id: Ecto.UUID.t() | nil,
           amount: integer() | nil,
