@@ -1,5 +1,6 @@
 defmodule EmployeeRewardApp.Resolvers.UserResolver do
   alias EmployeeRewardApp.Users
+  alias EmployeeRewardApp.Utils.Sensitive
 
   @moduledoc """
   This module defines resolvers relating to all users
@@ -22,18 +23,12 @@ defmodule EmployeeRewardApp.Resolvers.UserResolver do
   be more than 5 John Smiths
   """
   def search_user(_parent, %{name: name}, %{
-        context: %{is_admin: is_admin, current_user: current_user}
+        context: %{current_user: current_user}
       }) do
-    users = Users.search_users(name)
-
     users =
-      if is_admin do
-        users
-      else
-        Enum.map(users, &Map.take(&1, [:id, :name]))
-      end
-      # Remove current_user from results
+      Users.search_users(name)
       |> Enum.reject(fn user -> user.id == current_user.id end)
+      |> Enum.map(&Sensitive.omit_sensitive(&1, current_user))
 
     {:ok, users}
   end
