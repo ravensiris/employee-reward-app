@@ -66,7 +66,7 @@ defmodule EmployeeRewardAppWeb.APIUserTest do
     test "find jane by id", %{member_conn: conn, janes: janes} do
       jane =
         List.last(janes)
-        |> Sensitive.omit_sensitive()
+        |> Sensitive.omit()
         |> stringify_user()
 
       jane_clipped_id =

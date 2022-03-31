@@ -28,7 +28,7 @@ defmodule EmployeeRewardApp.Resolvers.UserResolver do
     users =
       Users.search_users(name)
       |> Enum.reject(fn user -> user.id == current_user.id end)
-      |> Enum.map(&Sensitive.omit_sensitive(&1, current_user))
+      |> Sensitive.omit(current_user)
 
     {:ok, users}
   end
