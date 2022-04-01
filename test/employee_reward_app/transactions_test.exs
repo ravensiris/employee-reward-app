@@ -129,4 +129,51 @@ defmodule EmployeeRewardApp.TransactionsTest do
       assert {:error, _} = t2
     end
   end
+
+  describe "get_recent_transactions" do
+    test "returns most recent 10" do
+      u1 = insert(:user)
+      u2 = insert(:user)
+
+      ts = insert_list(50, :transaction, %{amount: 1, from_user: u1, to_user: u2})
+
+      recent = Transactions.get_recent_transactions(u1.id)
+      assert length(recent) == 10
+      ts_recent = Enum.map(ts, & &1.inserted_at) |> Enum.sort(&>=/2) |> Enum.take(10)
+      recent_inserted_at = Enum.map(recent, & &1.inserted_at)
+      assert recent_inserted_at == ts_recent
+    end
+
+    test "filters direction correctly" do
+      u1 = insert(:user)
+      u2 = insert(:user)
+
+      ts_from =
+        insert_list(5, :transaction, %{amount: 1, from_user: u1, to_user: u2})
+        |> Enum.map(& &1.id)
+        |> MapSet.new()
+
+      ts_to =
+        insert_list(5, :transaction, %{amount: 1, from_user: u2, to_user: u1})
+        |> Enum.map(& &1.id)
+        |> MapSet.new()
+
+      ts_all = MapSet.union(ts_from, ts_to)
+
+      recent_to =
+        Transactions.get_recent_transactions(u1.id, :to) |> Enum.map(& &1.id) |> MapSet.new()
+
+      recent_from =
+        Transactions.get_recent_transactions(u1.id, :from) |> Enum.map(& &1.id) |> MapSet.new()
+
+      recent_all =
+        Transactions.get_recent_transactions(u1.id, [:from, :to])
+        |> Enum.map(& &1.id)
+        |> MapSet.new()
+
+      assert recent_to == ts_to
+      assert recent_from == ts_from
+      assert recent_all == ts_all
+    end
+  end
 end

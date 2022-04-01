@@ -85,7 +85,6 @@ defmodule EmployeeRewardApp.Transactions do
   @type user_id() :: String.t() | Ecto.UUID.t()
   @type direction() :: :from | :to
 
-  # TODO: Write tests
   @doc """
   Gets the most recent 10 transactions performed by/with `User` with `id` `user_id`
 
