@@ -104,8 +104,10 @@ defmodule EmployeeRewardApp.Transactions do
   @spec get_recent_transactions(user_id(), [direction()]) :: [Transaction.t()]
   def get_recent_transactions(user_id, direction) when is_list(direction) do
     query = Enum.reduce(direction, Transaction, fn dir, q -> with_direction(q, user_id, dir) end)
+    now_month = Timex.beginning_of_month(Timex.now())
 
     query
+    |> where([t], t.inserted_at >= ^now_month)
     |> limit(10)
     |> order_by([t], desc: t.inserted_at)
     |> preload([:from_user, :to_user])
