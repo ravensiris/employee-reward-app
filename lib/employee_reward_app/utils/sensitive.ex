@@ -43,14 +43,11 @@ defmodule EmployeeRewardApp.Utils.Sensitive do
     }
 
     # User has more access to his own data
-    u =
-      if user.id == id do
-        %User{u | email: user.email}
-      else
-        u
-      end
-
-    u
+    if user.id == id do
+      %User{u | email: user.email}
+    else
+      u
+    end
   end
 
   def omit(%Transaction{} = transaction, %User{} = user) do
