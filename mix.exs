@@ -11,7 +11,8 @@ defmodule EmployeeRewardApp.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      dialyzer: [plt_add_deps: :transitive, ignore_warnings: ".dialyzer_ignore.exs"]
+      dialyzer: [plt_add_deps: :transitive, ignore_warnings: ".dialyzer_ignore.exs"],
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -62,7 +63,8 @@ defmodule EmployeeRewardApp.MixProject do
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
       {:ex_machina, "~> 2.7", only: [:dev, :test]},
       {:faker, "~> 0.16", only: [:dev, :test]},
-      {:timex, "~> 3.7"}
+      {:timex, "~> 3.7"},
+      {:excoveralls, "~> 0.14", only: :test}
     ]
   end
 
