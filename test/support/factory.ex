@@ -8,6 +8,7 @@ defmodule EmployeeRewardApp.Factory do
     password = Map.get(attrs, :password, "arstarst")
 
     %User{
+      id: Faker.UUID.v4(),
       name: Faker.Person.name(),
       email: Faker.Internet.email(),
       role: sequence(:role, ["admin", "member"]),
