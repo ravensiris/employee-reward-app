@@ -1,6 +1,12 @@
 {
   "skip_files": [
     "test",
-    "deps"
+    "deps",
+    "views",
+    "lib/employee_reward_app_web/gettext.ex",
+    "lib/employee_reward_app_web.ex",
+    "lib/employee_reward_app_web/endpoint.ex",
+    "lib/employee_reward_app_web/telemetry.ex",
+    "lib/employee_reward_app.ex"
   ]
 }
