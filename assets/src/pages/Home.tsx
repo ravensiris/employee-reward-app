@@ -1,12 +1,11 @@
 import CreditsShowcase from "$components/CreditsShowcase"
 import Hello from "$components/Hello"
 import Navbar from "$components/Navbar"
-import { GET_ME, MeQuery } from "$queries/user"
-import { useQuery } from "@apollo/client"
+import { useMe } from "$queries/user"
 import React from "react"
 
 export default function Home() {
-  const { loading, error, data } = useQuery<MeQuery>(GET_ME)
+  const { loading, error, data } = useMe()
   return (
     <>
       <Navbar />
