@@ -71,5 +71,17 @@ defmodule EmployeeRewardApp.SensitiveTest do
 
       transaction_assert(t1, t1_omit, true, true)
     end
+
+    test "works when one side is nil" do
+      u1 = build(:user)
+
+      t1 = build(:transaction, %{from_user: nil, to_user: u1})
+      t1_omit = Sensitive.omit(t1)
+      transaction_assert(t1, t1_omit)
+
+      t2 = build(:transaction, %{from_user: u1, to_user: nil})
+      t2_omit = Sensitive.omit(t2)
+      transaction_assert(t2, t2_omit)
+    end
   end
 end
