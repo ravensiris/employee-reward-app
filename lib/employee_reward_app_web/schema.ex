@@ -37,7 +37,7 @@ defmodule EmployeeRewardAppWeb.Schema do
     # TODO: Tests
     # BUG: Leaks emails and possibly other info to non admin users
     @desc "Send credits to another user"
-    field :send_credits, type: :transaction do
+    field :transaction, type: :transaction do
       middleware(Middleware.Authentication)
       arg(:amount, non_null(:integer))
       arg(:to, non_null(:uuid4))
