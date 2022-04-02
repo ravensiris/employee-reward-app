@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client"
+import { gql, useLazyQuery, useQuery } from "@apollo/client"
 
 export const GET_ME = gql`
   query getMe {
@@ -44,3 +44,6 @@ export interface MeQuery {
 export interface UsersQuery {
   users: User[]
 }
+
+export const useMe = () => useQuery<MeQuery>(GET_ME)
+export const useLazyUsers = () => useLazyQuery<UsersQuery>(GET_USERS)

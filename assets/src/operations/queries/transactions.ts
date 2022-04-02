@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client"
+import { gql, useQuery } from "@apollo/client"
 import type { User } from "$queries/user"
 
 export const GET_RECENT_TRANSACTIONS = gql`
@@ -6,10 +6,6 @@ export const GET_RECENT_TRANSACTIONS = gql`
     transactions {
       id
       amount
-      fromUser{
-        id
-        name
-      }
       toUser {
         id
         name
@@ -19,12 +15,14 @@ export const GET_RECENT_TRANSACTIONS = gql`
 `
 
 export interface Transaction {
-  id: string
+  id?: string
   amount?: number
-  fromUser: User
-  toUser: User
+  fromUser?: User
+  toUser?: User
 }
 
 export interface TransactionsQuery {
   transactions: Transaction[]
 }
+
+export const useRecentTransactions = () => useQuery<TransactionsQuery>(GET_RECENT_TRANSACTIONS)
