@@ -57,4 +57,6 @@ defmodule EmployeeRewardApp.Utils.Sensitive do
         to_user: omit(transaction.to_user, user)
     }
   end
+
+  def omit(nil, %User{}), do: nil
 end

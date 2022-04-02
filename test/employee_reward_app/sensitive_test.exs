@@ -16,8 +16,13 @@ defmodule EmployeeRewardApp.SensitiveTest do
          is_email_visible_from \\ false,
          is_email_visible_to \\ false
        ) do
-    user_assert(t1.from_user, t1.from_user, is_email_visible_from)
-    user_assert(t1.to_user, t1.to_user, is_email_visible_to)
+    if t1.from_user do
+      user_assert(t1.from_user, t1.from_user, is_email_visible_from)
+    end
+
+    if t1.to_user do
+      user_assert(t1.to_user, t1.to_user, is_email_visible_to)
+    end
   end
 
   describe "omit(%User{}, %User{})" do
