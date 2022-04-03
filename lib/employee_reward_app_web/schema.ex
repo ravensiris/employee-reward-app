@@ -54,7 +54,6 @@ defmodule EmployeeRewardAppWeb.Schema do
 
       config(fn
         args, %{context: %{current_user: %{id: user_id}}} ->
-          IO.inspect(user_id)
           {:ok, topic: "#{args.direction}_transaction:#{user_id}"}
 
         _args, _info ->

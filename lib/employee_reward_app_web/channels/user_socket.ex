@@ -4,9 +4,7 @@ defmodule EmployeeRewardAppWeb.UserSocket do
   alias EmployeeRewardApp.Users
 
   @impl true
-  def connect(%{"subscriptionToken" => token} = params, socket) do
-    IO.inspect(params)
-
+  def connect(%{"subscriptionToken" => token}, socket) do
     with {:ok, user_id} <-
            Phoenix.Token.verify(EmployeeRewardAppWeb.Endpoint, "user subscription session", token,
              max_age: 86_400
