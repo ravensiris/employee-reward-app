@@ -14,6 +14,8 @@ defmodule EmployeeRewardApp.Application do
       EmployeeRewardAppWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: EmployeeRewardApp.PubSub},
+      # Start the AsyncEmailSupervisor
+      {Task.Supervisor, name: EmployeeRewardApp.AsyncEmailSupervisor},
       # Start the Endpoint (http/https)
       EmployeeRewardAppWeb.Endpoint,
       # Start a worker by calling: EmployeeRewardApp.Worker.start_link(arg)
