@@ -4,9 +4,10 @@ import RecentTransactions from "$/components/RecentTransactions"
 import { useSendCredits } from "$/operations/mutations/transactions"
 import AutocompleteUser from "$components/AutocompleteUser"
 import Navbar from "$components/Navbar"
-import { useRecentTransactions } from "$queries/transactions"
+import { Transaction, useRecentTransactions } from "$queries/transactions"
 import { useMe, User } from "$queries/user"
-import React, { useState } from "react"
+import { gql } from "@apollo/client"
+import React, { useEffect, useState } from "react"
 
 export default function Send() {
   const [selectedUser, setSelectedUser] = useState<User>()
@@ -18,10 +19,45 @@ export default function Send() {
   const sendCredits = () => {
     sendCreditsMutation({ variables: { to: selectedUser?.id, amount: amount } })
   }
-  const { data: transactionsData } = useRecentTransactions()
+  const {
+    data: transactionsData,
+    subscribeToMore: transactionsSubscribeToMore,
+  } = useRecentTransactions()
   const transactions = transactionsData?.transactions
   const { data: meData } = useMe()
   const balance = meData?.me.balance?.balance
+
+  const TRANSACTION_OUTGOING_SUBSCRIPTION = gql`
+    subscription onOutgoingTransactionAdded {
+      newTransaction(direction: OUTGOING) {
+        id
+        amount
+        fromUser {
+          id
+          name
+        }
+        toUser {
+          id
+          name
+        }
+      }
+    }
+  `
+
+  useEffect(() => {
+    transactionsSubscribeToMore({
+      document: TRANSACTION_OUTGOING_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }: any) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+        const newTransaction: Transaction = subscriptionData.data.newTransaction
+        return Object.assign({}, prev, {
+          transactions: [newTransaction, ...prev.transactions],
+        })
+      },
+    })
+  }, [TRANSACTION_OUTGOING_SUBSCRIPTION, transactionsSubscribeToMore])
 
   return (
     <>

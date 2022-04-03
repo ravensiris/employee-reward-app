@@ -35,6 +35,7 @@ export interface User {
   email?: string
   name?: string
   balance?: Balance
+  subscriptionToken?: string
 }
 
 export interface MeQuery {
