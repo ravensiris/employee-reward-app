@@ -52,10 +52,13 @@ defmodule EmployeeRewardAppWeb.Schema do
     field :new_transaction, :transaction do
       arg(:direction, non_null(:transaction_direction))
 
-      config(fn args, _info ->
-        # TODO: add token arg and replace user id that token belongs to
-        # REFERENCE: https://github.com/danschultzer/pow/issues/153#issuecomment-478251934
-        {:ok, topic: "#{args.direction}_transaction:*"}
+      config(fn
+        args, %{context: %{current_user: %{id: user_id}}} ->
+          IO.inspect(user_id)
+          {:ok, topic: "#{args.direction}_transaction:#{user_id}"}
+
+        _args, _info ->
+          {:error, "user unauthorized"}
       end)
     end
   end

@@ -21,6 +21,20 @@ defmodule EmployeeRewardApp.Resolvers.MeResolver do
         result
       end
 
+    result =
+      if "subscriptionToken" in fields,
+        do:
+          Map.put(
+            result,
+            :subscription_token,
+            Phoenix.Token.sign(
+              EmployeeRewardAppWeb.Endpoint,
+              "user subscription session",
+              current_user.id
+            )
+          ),
+        else: result
+
     {:ok, result}
   end
 end

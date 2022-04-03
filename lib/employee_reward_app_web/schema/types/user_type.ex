@@ -11,5 +11,6 @@ defmodule EmployeeRewardAppWeb.Schema.Types.UserType do
     field :role, :string
 
     field :balance, :balance
+    field :subscription_token, :string
   end
 end
