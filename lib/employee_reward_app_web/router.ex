@@ -56,7 +56,8 @@ defmodule EmployeeRewardAppWeb.Router do
     if Mix.env() == :dev do
       forward "/graphiql", Absinthe.Plug.GraphiQL,
         schema: EmployeeRewardAppWeb.Schema,
-        interface: :playground
+        interface: :playground,
+        socket: EmployeeRewardAppWeb.UserSocket
     end
 
     forward "/", Absinthe.Plug, schema: EmployeeRewardAppWeb.Schema
