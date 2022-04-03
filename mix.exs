@@ -64,7 +64,8 @@ defmodule EmployeeRewardApp.MixProject do
       {:ex_machina, "~> 2.7", only: [:dev, :test]},
       {:faker, "~> 0.16", only: [:dev, :test]},
       {:timex, "~> 3.7"},
-      {:excoveralls, "~> 0.14", only: :test}
+      {:excoveralls, "~> 0.14", only: :test},
+      {:absinthe_phoenix, "~> 2.0"}
     ]
   end
 
