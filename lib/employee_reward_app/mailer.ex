@@ -8,42 +8,57 @@ defmodule EmployeeRewardApp.Mailer do
   require Logger
 
   alias EmployeeRewardAppWeb.Endpoint
+  alias EmployeeRewardApp.Transactions.Transaction
+  alias EmployeeRewardApp.Users.User
 
   @impl true
-  @spec cast(%{
+  @type pow_email_map() :: %{
           :html => binary,
           :subject => binary,
           :text => binary,
           :user => atom | %{:email => any, optional(any) => any},
           optional(any) => any
-        }) :: Swoosh.Email.t()
+        }
+  @spec cast(pow_email_map() | Transaction.t()) :: Swoosh.Email.t()
   @doc """
-  Creates a user confirmation Swoosh.Email.t() from data supplied by Pow
+  Converts supported maps/structs to `Swoosh.Email`
   """
-  def cast(%{user: user, subject: subject, text: text, html: html}) do
+  def cast(%{user: %User{name: name, email: email}, subject: subject, text: text, html: html}) do
     %Swoosh.Email{}
-    |> to({"", user.email})
-    |> from({"Employee Reward App", "noreply@#{Endpoint.host()}"})
+    |> to({name, email})
+    |> from()
     |> subject(subject)
     |> html_body(html)
     |> text_body(text)
   end
 
+  def cast(%Transaction{to_user: %User{name: name, email: email}, amount: amount}) do
+    %Swoosh.Email{}
+    |> to({name, email})
+    |> from()
+    |> subject("You have been awarded #{amount}Ψ!")
+    |> text_body("""
+    You have been awarded #{amount}Ψ!
+    Your efforts have been acknowledged!
+    All the best,
+    EmployeeRewardApp Team
+    """)
+  end
+
   @impl true
   @spec process(Swoosh.Email.t()) :: :ok
   @doc """
-  Sends a user confirmation email asyncronously
+  Sends emails asynchronously
   """
   def process(email) do
-    # An asynchronous process should be used here to prevent enumeration
-    # attacks. Synchronous e-mail delivery can reveal whether a user already
-    # exists in the system or not.
-
-    Task.start(fn ->
-      email
-      |> deliver()
-      |> log_warnings()
-    end)
+    Task.Supervisor.start_child(
+      EmployeeRewardApp.AsyncEmailSupervisor,
+      fn ->
+        email
+        |> deliver()
+        |> log_warnings()
+      end
+    )
 
     :ok
   end
@@ -53,4 +68,9 @@ defmodule EmployeeRewardApp.Mailer do
   end
 
   defp log_warnings({:ok, response}), do: {:ok, response}
+
+  defp from(mail) do
+    mail
+    |> from({"Employee Reward App", "noreply@#{Endpoint.host()}"})
+  end
 end
