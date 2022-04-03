@@ -1,11 +1,18 @@
 defmodule EmployeeRewardApp.Resolvers.TransactionResolver do
   alias EmployeeRewardApp.Transactions
+  alias EmployeeRewardApp.Transactions.Transaction
   alias EmployeeRewardApp.Utils.Sensitive
   alias EmployeeRewardApp.Users.User
+  alias EmployeeRewardApp.Mailer
 
   @moduledoc """
   This module defines resolvers relating to `Transactions`
   """
+
+  defp notify_new_transfer_by_email(%Transaction{} = transaction) do
+    Mailer.cast(transaction) |> Mailer.process()
+    transaction
+  end
 
   # TODO: Spec
   def send_credits(_parent, %{to: to_user_id, amount: amount}, %{
@@ -19,8 +26,11 @@ defmodule EmployeeRewardApp.Resolvers.TransactionResolver do
       })
 
     case transaction do
-      {:ok, transaction} -> {:ok, Sensitive.omit(transaction, current_user)}
-      {:error, _} -> {:error, "unable to send credits"}
+      {:ok, transaction} ->
+        {:ok, transaction |> notify_new_transfer_by_email() |> Sensitive.omit(current_user)}
+
+      {:error, _} ->
+        {:error, "unable to send credits"}
     end
   end
 
