@@ -18,6 +18,8 @@ defmodule EmployeeRewardApp.Application do
       {Task.Supervisor, name: EmployeeRewardApp.AsyncEmailSupervisor},
       # Start the Endpoint (http/https)
       EmployeeRewardAppWeb.Endpoint,
+      # Start Absinthe.Subscription
+      {Absinthe.Subscription, [EmployeeRewardAppWeb.Endpoint]},
       # Start a worker by calling: EmployeeRewardApp.Worker.start_link(arg)
       # {EmployeeRewardApp.Worker, arg}
       {Redix, {System.get_env("REDIS_URL", "redis://localhost"), [name: :redix]}}
