@@ -17,9 +17,7 @@ defmodule EmployeeRewardAppWeb.Schema do
       resolve(&Resolvers.MeResolver.show_me/3)
     end
 
-    # TODO: Tests
-    # TODO: Desc
-    # BUG: Leaks emails and possibly other info to non admin users
+    @desc "Lists 10 recent transactions"
     field :transactions, list_of(:transaction) do
       middleware(Middleware.Authentication)
       resolve(&Resolvers.TransactionResolver.get_recent/3)
@@ -34,8 +32,6 @@ defmodule EmployeeRewardAppWeb.Schema do
   end
 
   mutation do
-    # TODO: Tests
-    # BUG: Leaks emails and possibly other info to non admin users
     @desc "Send credits to another user"
     field :transaction, type: :transaction do
       middleware(Middleware.Authentication)
@@ -43,6 +39,14 @@ defmodule EmployeeRewardAppWeb.Schema do
       arg(:to, non_null(:uuid4))
 
       resolve(&Resolvers.TransactionResolver.send_credits/3)
+    end
+  end
+
+  subscription do
+    field :new_transaction, :transaction do
+      config(fn _args, _info ->
+        {:ok, topic: "*"}
+      end)
     end
   end
 end
