@@ -16,7 +16,15 @@ defmodule EmployeeRewardApp.Resolvers.TransactionResolver do
   end
 
   defp notify_new_transfer_by_subscription(%Transaction{} = transaction) do
-    Absinthe.Subscription.publish(EmployeeRewardAppWeb.Endpoint, transaction, new_transaction: "*")
+    incoming_user_id = transaction.to_user.id
+    outgoing_user_id = transaction.from_user.id
+
+    Absinthe.Subscription.publish(EmployeeRewardAppWeb.Endpoint, transaction,
+      new_transaction: [
+        "incoming_transaction:#{incoming_user_id}",
+        "outgoing_transaction:#{outgoing_user_id}"
+      ]
+    )
 
     transaction
   end
@@ -37,8 +45,8 @@ defmodule EmployeeRewardApp.Resolvers.TransactionResolver do
         {:ok,
          transaction
          |> notify_new_transfer_by_email()
-         |> notify_new_transfer_by_subscription()
-         |> Sensitive.omit(current_user)}
+         |> Sensitive.omit(current_user)
+         |> notify_new_transfer_by_subscription()}
 
       {:error, _} ->
         {:error, "unable to send credits"}

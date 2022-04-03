@@ -42,10 +42,20 @@ defmodule EmployeeRewardAppWeb.Schema do
     end
   end
 
+  @desc "Transaction direction relative to the user"
+  enum :transaction_direction do
+    value(:incoming, description: "Incoming transactions")
+    value(:outgoing, description: "Outgoing transactions")
+  end
+
   subscription do
     field :new_transaction, :transaction do
-      config(fn _args, _info ->
-        {:ok, topic: "*"}
+      arg(:direction, non_null(:transaction_direction))
+
+      config(fn args, _info ->
+        # TODO: add token arg and replace user id that token belongs to
+        # REFERENCE: https://github.com/danschultzer/pow/issues/153#issuecomment-478251934
+        {:ok, topic: "#{args.direction}_transaction:*"}
       end)
     end
   end
