@@ -77,7 +77,9 @@ defmodule EmployeeRewardApp.Users do
           id: u.id,
           name_clipped: fragment("SUBSTR(?, 0, LENGTH(?) + 1)", u.name, ^name),
           id_prefix: fragment("SPLIT_PART(?, '-', 1)", type(u.id, :string))
-        }
+        },
+        # filter only active users
+        where: not is_nil(u.email_confirmed_at)
 
     from(
       u in User,
