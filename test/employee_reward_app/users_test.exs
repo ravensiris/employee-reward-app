@@ -59,9 +59,7 @@ defmodule EmployeeRewardApp.UsersTest do
     end
 
     test "only shows users with verified email" do
-      user = insert(:user)
-      # just in case factory is changed in the future
-      assert is_nil(user.email_confirmed_at)
+      user = insert(:user, %{email_confirmed_at: nil})
       found_users = Users.search_users(user.name)
       assert length(found_users) == 0
     end
