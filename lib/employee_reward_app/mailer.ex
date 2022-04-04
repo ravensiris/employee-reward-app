@@ -71,6 +71,6 @@ defmodule EmployeeRewardApp.Mailer do
 
   defp from(mail) do
     mail
-    |> from({"Employee Reward App", "noreply@#{Endpoint.host()}"})
+    |> from({"Employee Reward App", "employeerewardapp@protonmail.com"})
   end
 end
