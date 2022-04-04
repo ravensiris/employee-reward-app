@@ -12,7 +12,8 @@ defmodule EmployeeRewardApp.Factory do
       name: Faker.Person.name(),
       email: Faker.Internet.email(),
       role: sequence(:role, ["admin", "member"]),
-      password: password
+      password: password,
+      email_confirmed_at: Timex.now()
     }
     |> merge_attributes(attrs)
     |> evaluate_lazy_attributes()
