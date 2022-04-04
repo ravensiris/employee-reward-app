@@ -96,7 +96,7 @@ jobs:
         run: mix format --check-formatted
 
       - name: Run Credo
-        run: mix credo
+        run: mix credo --ignore todo
 
       - name: Run Dialyzer
         run: mix dialyzer --no-check --ignore-exit-status
