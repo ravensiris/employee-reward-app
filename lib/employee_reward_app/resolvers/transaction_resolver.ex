@@ -68,15 +68,25 @@ defmodule EmployeeRewardApp.Resolvers.TransactionResolver do
     end
   end
 
-  defp transate_dir(:incoming), do: :to
-  defp transate_dir(:outgoing), do: :from
+  defp translate_dir(:incoming), do: :to
+  defp translate_dir(:outgoing), do: :from
 
   @spec get_recent(any, any, any) :: {:ok, list(Transactions.Transaction.t())} | {:error, any()}
   def get_recent(_parent, %{direction: direction}, %{
         context: %{current_user: %User{} = current_user}
       }) do
     transactions =
-      Transactions.get_recent_transactions(current_user.id, transate_dir(direction))
+      Transactions.get_recent_transactions(current_user.id, translate_dir(direction))
+      |> Sensitive.omit(current_user)
+
+    {:ok, transactions}
+  end
+
+  def get_recent(_parent, _args, %{
+        context: %{current_user: %User{} = current_user}
+      }) do
+    transactions =
+      Transactions.get_recent_transactions(current_user.id)
       |> Sensitive.omit(current_user)
 
     {:ok, transactions}
