@@ -54,7 +54,7 @@ export default function Send() {
         }
         const newTransaction: Transaction = subscriptionData.data.newTransaction
         return Object.assign({}, prev, {
-          transactions: [newTransaction, ...prev.transactions],
+          transactions: [newTransaction, ...prev.transactions].slice(0, 10),
         })
       },
     })
@@ -104,7 +104,7 @@ export default function Send() {
       <div className="section">
         <div className="box">
           <div className="title">Recently sent Ψ</div>
-          {(transactions && (
+          {(transactions && transactions.length > 0 && (
             <RecentTransactions transactions={transactions} />
           )) || <div className="subtitle">No points sent yet!</div>}
         </div>
