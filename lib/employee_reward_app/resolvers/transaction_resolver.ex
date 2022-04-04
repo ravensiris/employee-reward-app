@@ -27,6 +27,18 @@ defmodule EmployeeRewardApp.Resolvers.TransactionResolver do
       ]
     )
 
+    # TODO: Test and make it async
+    incoming_user_balance = Transactions.get_balance!(incoming_user_id)
+    outgoing_user_balance = Transactions.get_balance!(outgoing_user_id)
+
+    Absinthe.Subscription.publish(EmployeeRewardAppWeb.Endpoint, incoming_user_balance,
+      update_balance: "balance:#{incoming_user_id}"
+    )
+
+    Absinthe.Subscription.publish(EmployeeRewardAppWeb.Endpoint, outgoing_user_balance,
+      update_balance: "balance:#{outgoing_user_id}"
+    )
+
     transaction
   end
 
@@ -54,10 +66,15 @@ defmodule EmployeeRewardApp.Resolvers.TransactionResolver do
     end
   end
 
+  defp transate_dir(:incoming), do: :to
+  defp transate_dir(:outgoing), do: :from
+
   @spec get_recent(any, any, any) :: {:ok, list(Transactions.Transaction.t())} | {:error, any()}
-  def get_recent(_parent, _args, %{context: %{current_user: %User{} = current_user}}) do
+  def get_recent(_parent, %{direction: direction}, %{
+        context: %{current_user: %User{} = current_user}
+      }) do
     transactions =
-      Transactions.get_recent_transactions(current_user.id)
+      Transactions.get_recent_transactions(current_user.id, transate_dir(direction))
       |> Sensitive.omit(current_user)
 
     {:ok, transactions}

@@ -3,7 +3,7 @@ import type { User } from "$queries/user"
 
 export const GET_RECENT_TRANSACTIONS = gql`
   query getRecentTransactions {
-    transactions {
+    transactions(direction: OUTGOING) {
       id
       amount
       toUser {

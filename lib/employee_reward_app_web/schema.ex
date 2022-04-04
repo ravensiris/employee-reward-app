@@ -10,6 +10,12 @@ defmodule EmployeeRewardAppWeb.Schema do
   import_types(Schema.Types.UserType)
   import_types(Schema.Types.TransactionType)
 
+  @desc "Transaction direction relative to the user"
+  enum :transaction_direction do
+    value(:incoming, description: "Incoming transactions")
+    value(:outgoing, description: "Outgoing transactions")
+  end
+
   query do
     @desc "Get current user"
     field :me, :user do
@@ -20,6 +26,7 @@ defmodule EmployeeRewardAppWeb.Schema do
     @desc "Lists 10 recent transactions"
     field :transactions, list_of(:transaction) do
       middleware(Middleware.Authentication)
+      arg(:direction, :transaction_direction)
       resolve(&Resolvers.TransactionResolver.get_recent/3)
     end
 
@@ -42,19 +49,25 @@ defmodule EmployeeRewardAppWeb.Schema do
     end
   end
 
-  @desc "Transaction direction relative to the user"
-  enum :transaction_direction do
-    value(:incoming, description: "Incoming transactions")
-    value(:outgoing, description: "Outgoing transactions")
-  end
-
   subscription do
+    @desc "Announces new transactions"
     field :new_transaction, :transaction do
       arg(:direction, non_null(:transaction_direction))
 
       config(fn
         args, %{context: %{current_user: %{id: user_id}}} ->
           {:ok, topic: "#{args.direction}_transaction:#{user_id}"}
+
+        _args, _info ->
+          {:error, "user unauthorized"}
+      end)
+    end
+
+    @desc "Announces changes in balance"
+    field :update_balance, :balance do
+      config(fn
+        _args, %{context: %{current_user: %{id: user_id}}} ->
+          {:ok, topic: "balance:#{user_id}"}
 
         _args, _info ->
           {:error, "user unauthorized"}
