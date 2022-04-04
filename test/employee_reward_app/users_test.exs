@@ -57,5 +57,13 @@ defmodule EmployeeRewardApp.UsersTest do
       results = Enum.map(permuts, &Users.search_users/1)
       Enum.each(results, fn r -> assert r == template_result end)
     end
+
+    test "only shows users with verified email" do
+      user = insert(:user)
+      # just in case factory is changed in the future
+      assert is_nil(user.email_confirmed_at)
+      found_users = Users.search_users(user.name)
+      assert length(found_users) == 0
+    end
   end
 end
