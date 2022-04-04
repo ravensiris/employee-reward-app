@@ -87,6 +87,7 @@ if (rootElement !== null) {
           definition.operation === "subscription"
         )
       },
+      // @ts-ignore
       absintheLink,
       httpLink
     )
