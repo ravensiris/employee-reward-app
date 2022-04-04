@@ -1,6 +1,7 @@
 defmodule EmployeeRewardAppWeb.APITransactionsTest do
   use EmployeeRewardAppWeb.ConnCase
   import EmployeeRewardApp.Factory
+  import Swoosh.TestAssertions
 
   @recent_query """
   query getTransactions{
@@ -25,6 +26,7 @@ defmodule EmployeeRewardAppWeb.APITransactionsTest do
   @send_credits_mutation """
   mutation sendCredits($to: UUID4!, $amount: Int!){
     transaction(to: $to, amount: $amount){
+      id
       amount,
       toUser{
         id
@@ -54,9 +56,13 @@ defmodule EmployeeRewardAppWeb.APITransactionsTest do
   end
 
   describe "query: 'transactions'" do
+    defp assign_user(conn, user) do
+      Pow.Plug.assign_current_user(conn, user, [])
+    end
+
     test "gives 10 most recent", %{conn: conn} do
       u1 = insert(:user, %{role: :member})
-      conn = Pow.Plug.assign_current_user(conn, u1, [])
+      conn = assign_user(conn, u1)
       ts = insert_list(50, :transaction, %{amount: 1, from_user: u1})
       ts_ids = ts |> Enum.map(& &1.id) |> MapSet.new()
       conn = query_recent(conn)
@@ -74,7 +80,7 @@ defmodule EmployeeRewardAppWeb.APITransactionsTest do
 
     test "no email leaks for members", %{conn: conn} do
       u1 = insert(:user, %{role: :member})
-      conn = Pow.Plug.assign_current_user(conn, u1, [])
+      conn = assign_user(conn, u1)
       ts = insert_list(50, :transaction, %{amount: 1, from_user: u1})
       conn = query_recent(conn)
       resp = json_response(conn, 200)
@@ -91,11 +97,14 @@ defmodule EmployeeRewardAppWeb.APITransactionsTest do
       to_user = insert(:user)
 
       result =
-        Pow.Plug.assign_current_user(conn, me, [])
+        conn
+        |> assign_user(me)
         |> mutation_send_credits(to_user.id, 1)
         |> json_response(200)
 
-      assert result["data"]["transaction"] == %{
+      transaction_json = result["data"]["transaction"] |> Map.delete("id")
+
+      assert transaction_json == %{
                "amount" => 1,
                "fromUser" => %{
                  "email" => me.email,
@@ -116,7 +125,8 @@ defmodule EmployeeRewardAppWeb.APITransactionsTest do
       to_user = insert(:user)
 
       result =
-        Pow.Plug.assign_current_user(conn, me, [])
+        conn
+        |> assign_user(me)
         |> mutation_send_credits(to_user.id, 51)
         |> json_response(200)
 
@@ -128,18 +138,42 @@ defmodule EmployeeRewardAppWeb.APITransactionsTest do
       me = insert(:user, %{role: :member})
       to_user = insert(:user)
 
-      conn = Pow.Plug.assign_current_user(conn, me, [])
+      conn = assign_user(conn, me)
+
       edge_cases = [nil, -1, 0, "-1", "0", "1"]
 
       for amount <- edge_cases do
         result =
           conn
-          |> mutation_send_credits(to_user.id, -1)
+          |> mutation_send_credits(to_user.id, amount)
           |> json_response(200)
 
         assert result["data"]["transaction"] == nil
         assert result["errors"]
       end
     end
+
+    test "sends email to recepient", %{conn: conn} do
+      me = insert(:user, %{role: :member})
+      to_user = insert(:user)
+      conn = assign_user(conn, me)
+
+      resp =
+        conn
+        |> mutation_send_credits(to_user.id, 1)
+        |> json_response(200)
+
+      transaction_id = resp["data"]["transaction"]["id"]
+
+      transaction =
+        EmployeeRewardApp.Transactions.get_transaction!(transaction_id)
+        |> EmployeeRewardApp.Repo.preload([:from_user, :to_user])
+
+      email = EmployeeRewardApp.Mailer.cast(transaction)
+      assert_email_sent(email)
+    end
+
+    # TODO: Test sockets
+    # Reference: https://gist.github.com/wpiekutowski/8e4de4b9c8253584765ca0106c190dad
   end
 end
