@@ -10,6 +10,7 @@ defmodule EmployeeRewardApp.Resolvers.TransactionResolver do
   """
 
   defp notify_new_transfer_by_email(%Transaction{} = transaction) do
+    # TODO: Test if emails are sent
     Mailer.cast(transaction) |> Mailer.process()
 
     transaction
@@ -20,6 +21,7 @@ defmodule EmployeeRewardApp.Resolvers.TransactionResolver do
     incoming_user_id = transaction.to_user.id
     outgoing_user_id = transaction.from_user.id
 
+    # TODO: Test and make async
     Absinthe.Subscription.publish(EmployeeRewardAppWeb.Endpoint, anonimized_transaction,
       new_transaction: [
         "incoming_transaction:#{incoming_user_id}",
