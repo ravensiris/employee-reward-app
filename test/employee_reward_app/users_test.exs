@@ -61,7 +61,7 @@ defmodule EmployeeRewardApp.UsersTest do
     test "only shows users with verified email" do
       user = insert(:user, %{email_confirmed_at: nil})
       found_users = Users.search_users(user.name)
-      assert length(found_users) == 0
+      assert Enum.empty?(found_users)
     end
   end
 end
