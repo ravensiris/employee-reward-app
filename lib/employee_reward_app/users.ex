@@ -91,4 +91,8 @@ defmodule EmployeeRewardApp.Users do
     )
     |> Repo.all()
   end
+
+  def get_user(user_id) do
+    Repo.get(User, user_id)
+  end
 end

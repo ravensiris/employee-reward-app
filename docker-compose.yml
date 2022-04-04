@@ -8,6 +8,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: employee_reward_app_dev
+    networks:
+      - postgres
   redis:
     image: redis:6.2-alpine
     restart: always
@@ -16,6 +18,29 @@ services:
     command: redis-server --save 20 1 --loglevel warning
     volumes:
       - cache:/data
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - pgadmin:/var/lib/pgadmin
+       - ./priv/pgadmin:/data
+
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+
 volumes:
   cache:
     driver: local
+  postgres:
+  pgadmin:
+
+networks:
+  postgres:
+    driver: bridge
