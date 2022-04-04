@@ -1,3 +1,4 @@
+import BalanceText from "$/components/BalanceText"
 import CreditsInput from "$/components/CreditsInput"
 import PopupDialog from "$/components/PopupDialog"
 import RecentTransactions from "$/components/RecentTransactions"
@@ -82,7 +83,9 @@ export default function Send() {
           {balance !== undefined && (
             <div className="block">
               <hr />
-              <p>Your balance: {balance}</p>
+              <p>
+                Your balance: <BalanceText type="balance" />
+              </p>
             </div>
           )}
           <div className="block">

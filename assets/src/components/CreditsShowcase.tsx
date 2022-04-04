@@ -6,7 +6,7 @@ interface Props {
   buttonText: string
   buttonTo: To
   theme: "is-info" | "is-danger" | "is-success"
-  credits?: string | number
+  credits?: string | number | React.ReactNode
 }
 export default function CreditsShowcase({
   title,
@@ -19,10 +19,7 @@ export default function CreditsShowcase({
     <div className={`tile is-parent is-vertical ${theme}`}>
       <div className={`tile is-child notification ${theme}`}>
         <p className="title">{title}</p>
-        <p className="subtitle">
-          {credits === undefined ? "..." : credits}{" "}
-          <span className="font-bold">Ψ</span>
-        </p>
+        <p className="subtitle">{credits === undefined ? "..." : credits} </p>
         <div className="buttons">
           <Link className={`button is-light ${theme}`} to={buttonTo}>
             {buttonText}
