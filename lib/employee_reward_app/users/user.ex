@@ -7,6 +7,8 @@ defmodule EmployeeRewardApp.Users.User do
   use Pow.Extension.Ecto.Schema,
     extensions: [PowResetPassword, PowEmailConfirmation]
 
+  alias EmployeeRewardApp.Transactions.Balance
+
   @type role() :: :member | :admin
 
   @type t :: %__MODULE__{
@@ -21,6 +23,7 @@ defmodule EmployeeRewardApp.Users.User do
     pow_user_fields()
     field :role, Ecto.Enum, values: [:member, :admin], default: :member
     field :name, :string
+    has_one :balance, {"transactions_balance", Balance}
 
     timestamps()
   end
