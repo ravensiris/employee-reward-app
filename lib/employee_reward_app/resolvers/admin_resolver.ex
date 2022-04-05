@@ -70,4 +70,16 @@ defmodule EmployeeRewardApp.Resolvers.AdminResolver do
   end
 
   def user_transactions(_parent, _args, _info), do: {:error, "unauthorized"}
+
+  # TODO: move the queries to a context
+  def delete_transaction(_parent, %{transaction_id: transaction_id}, %{context: %{is_admin: true}}) do
+    with %Transaction{} = transaction <- Repo.get(Transaction, transaction_id),
+         {:ok, transaction} <- Repo.delete(transaction) do
+      {:ok, transaction}
+    else
+      _ -> {:error, "unable to delete transaction #{transaction_id}"}
+    end
+  end
+
+  def delete_transaction(_parent, _args, _info), do: {:error, "unauthorized"}
 end

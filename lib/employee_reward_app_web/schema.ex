@@ -63,6 +63,13 @@ defmodule EmployeeRewardAppWeb.Schema do
 
       resolve(&Resolvers.TransactionResolver.send_credits/3)
     end
+
+    @desc "ADMIN ONLY: Delete given transaction"
+    field :delete_transaction, :transaction do
+      middleware(Middleware.Authentication)
+      arg(:transaction_id, non_null(:uuid4))
+      resolve(&Resolvers.AdminResolver.delete_transaction/3)
+    end
   end
 
   subscription do
