@@ -1,4 +1,8 @@
 defmodule EmployeeRewardApp.Resolvers.AdminResolver do
+  @moduledoc """
+  This module defines resolvers relating the administators
+  """
+
   alias EmployeeRewardApp.Users.User
   alias EmployeeRewardApp.Users
   alias EmployeeRewardApp.Transactions.Transaction
