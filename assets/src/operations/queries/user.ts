@@ -6,6 +6,7 @@ export const GET_ME = gql`
       id
       email
       name
+      role
       balance {
         balance
         sent
@@ -30,12 +31,18 @@ export interface Balance {
   received?: number
 }
 
+export enum UserRole {
+  MEMBER = "member",
+  ADMIN = "admin",
+}
+
 export interface User {
   id?: string
   email?: string
   name?: string
   balance?: Balance
   subscriptionToken?: string
+  role?: UserRole
 }
 
 export interface MeQuery {

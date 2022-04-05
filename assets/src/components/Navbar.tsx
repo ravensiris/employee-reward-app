@@ -1,12 +1,23 @@
 import { NavbarState, navbarStateVar } from "$/cache"
+import { useMe, UserRole } from "$/operations/queries/user"
 import { useReactiveVar } from "@apollo/client"
 import React from "react"
 import type { LinkProps } from "react-router-dom"
 import { Link, useMatch, useResolvedPath } from "react-router-dom"
 
-function NavLink({ children, to, ...props }: LinkProps) {
+export interface NavLinkProps extends LinkProps {
+  role?: UserRole
+}
+
+function NavLink({ children, to, role, ...props }: LinkProps) {
   const resolved = useResolvedPath(to)
   const match = useMatch({ path: resolved.pathname, end: true })
+
+  const { data: meData } = useMe()
+  if (role !== undefined && meData?.me.role !== role) {
+    return <></>
+  }
+
   return (
     <Link
       onClick={() => navbarStateVar({ hidden: true })}
@@ -61,6 +72,9 @@ function Navbar() {
       <NavMenu>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/send">Send</NavLink>
+        <NavLink to="/admin/overview" role={UserRole.ADMIN}>
+          Admin/Overview
+        </NavLink>
       </NavMenu>
     </nav>
   )

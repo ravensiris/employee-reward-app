@@ -1,12 +1,7 @@
 defmodule EmployeeRewardApp.Repo.Migrations.BalanceFromMaterializedToRegularView do
   use Ecto.Migration
 
-  def change do
-    execute "DROP TRIGGER IF EXISTS transactions_refresh_balance_trg on transactions;"
-    execute "DROP TRIGGER IF EXISTS users_change_balance_trg on users;"
-    execute "DROP FUNCTION IF EXISTS TRANSACTIONS_REFRESH_BALANCE;"
-    execute "DROP MATERIALIZED VIEW IF EXISTS transactions_balance;"
-
+  def up do
     execute """
       CREATE VIEW transactions_balance AS
       WITH CURRENT_ACTIVE_TRANSACTIONS AS
@@ -42,5 +37,9 @@ defmodule EmployeeRewardApp.Repo.Migrations.BalanceFromMaterializedToRegularView
         50 - coalesce(SENT, 0) + coalesce(RECEIVED,0) AS BALANCE
       FROM PRE_BALANCE pb full outer join users u on u.id = pb.user_id;
     """
+  end
+
+  def down do
+    execute "DROP VIEW IF EXISTS transactions_balance;"
   end
 end
