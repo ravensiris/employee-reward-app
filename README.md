@@ -66,6 +66,9 @@
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#technical-details">Technical details</a></li>
+    <li><a href="#how-does-the-graphql-schema-look-like">How does the GraphQL schema look like</a></li>
+    <li><a href="#cool-features">Cool features</a></li>
   </ol>
 </details>
 
