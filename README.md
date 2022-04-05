@@ -209,7 +209,7 @@ Project Link: [https://github.com/ravensiris/employee-reward-app](https://github
 
 Each transaction has a `from_user`, `to_user` and `inserted_at`
 
-(<iframe width="560" height="315" src='https://dbdiagram.io/embed/624ca386d043196e39004e60'> </iframe>)
+https://dbdiagram.io/embed/624ca386d043196e39004e60
 
 ```dbml
 Table transaction as T{
