@@ -5,6 +5,7 @@ defmodule EmployeeRewardAppWeb.Schema do
   alias EmployeeRewardAppWeb.Middleware
   alias EmployeeRewardApp.Resolvers
 
+  import_types(Absinthe.Type.Custom)
   import_types(Schema.Types.UUID4)
   import_types(Schema.Types.BalanceType)
   import_types(Schema.Types.UserType)
@@ -35,6 +36,21 @@ defmodule EmployeeRewardAppWeb.Schema do
       middleware(Middleware.Authentication)
       arg(:name, non_null(:string))
       resolve(&Resolvers.UserResolver.search_user/3)
+    end
+
+    @desc "ADMIN ONLY: get summary of a month"
+    field :summarized_month, list_of(:user) do
+      middleware(Middleware.Authentication)
+      arg(:month, non_null(:naive_datetime))
+      resolve(&Resolvers.AdminResolver.summarized_month/3)
+    end
+
+    @desc "ADMIN ONLY: get user's transactions for a month"
+    field :user_transactions, list_of(:transaction) do
+      middleware(Middleware.Authentication)
+      arg(:month, non_null(:naive_datetime))
+      arg(:user_id, non_null(:uuid4))
+      resolve(&Resolvers.AdminResolver.user_transactions/3)
     end
   end
 
