@@ -1,7 +1,11 @@
+import PopupDialog from "$/components/PopupDialog"
 import {
+  ADMIN_USER_TRANSACTIONS,
+  useDeleteTransactionMutation,
   useLazySummarizeMonth,
-  useLazyUserTransactions,
+  useLazyUserTransactions
 } from "$/operations/queries/admin"
+import { Transaction } from "$/operations/queries/transactions"
 import { User } from "$/operations/queries/user"
 import Navbar from "$components/Navbar"
 import React, { useMemo, useState } from "react"
@@ -11,7 +15,7 @@ export default function AdminOverview() {
 
   // used to init month input
   const now = new Date()
-  const month = now.getMonth().toString().padStart(2, "0")
+  const month = (now.getMonth() + 1).toString().padStart(2, "0")
   const year = now.getFullYear().toString()
   const defaultDate = `${year}-${month}`
 
@@ -29,9 +33,18 @@ export default function AdminOverview() {
     return date
   }, [selectedMonth])
 
+  // balance summary for each user
   const [summarizeMonth, { data: monthData }] = useLazySummarizeMonth()
+
+  // transaction history for a single user
   const [userTransactions, { data: userTransactionData }] =
     useLazyUserTransactions()
+
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction>()
+
+  const [dialogAccepted, setDialogAccepted] = useState<boolean | undefined>(false)
+
+  const [deleteTransaction] = useDeleteTransactionMutation()
 
   return (
     <>
@@ -59,6 +72,8 @@ export default function AdminOverview() {
             <button
               className="button is-primary w-full"
               onClick={() => {
+                setSelectedUser(undefined)
+                setSelectedTransaction(undefined)
                 summarizeMonth({
                   variables: {
                     month: selectedDate?.toISOString(),
@@ -94,6 +109,7 @@ export default function AdminOverview() {
                         key={user.id}
                         onClick={() => {
                           setSelectedUser(user)
+                          setSelectedTransaction(undefined)
                           userTransactions({
                             variables: {
                               month: selectedDate?.toISOString(),
@@ -123,45 +139,71 @@ export default function AdminOverview() {
       {selectedUser &&
         userTransactionData?.userTransactions &&
         userTransactionData.userTransactions.length > 0 && (
-          <section className="section">
-            <div className="container box">
-              <p className="title">{selectedUser.name}&apos;s transactions:</p>
-              <div className="table-container">
-                <table className="table is-striped whitespace-nowrap">
-                  <thead>
-                    <tr>
-                      <th>Id</th>
-                      <th>Amount</th>
-                      <th>From Id</th>
-                      <th>From Name</th>
-                      <th>From Email</th>
-                      <th>To Id</th>
-                      <th>To Name</th>
-                      <th>To Email</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {userTransactionData?.userTransactions.map(transaction => {
-                      return (
-                        <tr key={transaction.id}>
-                          <td>{transaction.id}</td>
-                          <td>{transaction.amount}</td>
-                          <td>{transaction.fromUser?.id}</td>
-                          <td>{transaction.fromUser?.name}</td>
-                          <td>{transaction.fromUser?.email}</td>
-                          <td>{transaction.toUser?.id}</td>
-                          <td>{transaction.toUser?.name}</td>
-                          <td>{transaction.toUser?.email}</td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
-              </div>
-              <button className="button is-danger w-full">Remove</button>
+        <section className="section">
+          <div className="container box">
+            <p className="title">{selectedUser.name}&apos;s transactions:</p>
+            <div className="table-container">
+              <table className="table is-striped whitespace-nowrap">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Amount</th>
+                    <th>From Id</th>
+                    <th>From Name</th>
+                    <th>From Email</th>
+                    <th>To Id</th>
+                    <th>To Name</th>
+                    <th>To Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {userTransactionData?.userTransactions.map(transaction => {
+                    return (
+                      <tr
+                        key={transaction.id}
+                        className={`is-clickable ${
+                          selectedTransaction?.id === transaction.id &&
+                            "is-selected"
+                        }`}
+                        onClick={() => {
+                          setSelectedTransaction(transaction)
+                        }}
+                      >
+                        <td>{transaction.id}</td>
+                        <td>{transaction.amount}</td>
+                        <td>{transaction.fromUser?.id}</td>
+                        <td>{transaction.fromUser?.name}</td>
+                        <td>{transaction.fromUser?.email}</td>
+                        <td>{transaction.toUser?.id}</td>
+                        <td>{transaction.toUser?.name}</td>
+                        <td>{transaction.toUser?.email}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
             </div>
-          </section>
-        )}
+            <PopupDialog type="is-danger" title="Are you sure?" isActive={dialogAccepted === undefined} onDismiss={() => {
+              setDialogAccepted(false)
+            }} onPrimaryClick={() => {
+              setDialogAccepted(true)
+              deleteTransaction({variables: {
+                transactionId: selectedTransaction?.id
+              }, refetchQueries: [
+                ADMIN_USER_TRANSACTIONS,
+                "userTransactions"
+              ]})
+            }} 
+            onSecondaryClick={() => {
+              setDialogAccepted(false)
+            }}
+            >Proceed with deleting transaction {selectedTransaction?.id} ?</PopupDialog>
+            <button className="button is-danger w-full" onClick={() => {
+              setDialogAccepted(undefined)
+            }}>Remove</button>
+          </div>
+        </section>
+      )}
     </>
   )
 }
